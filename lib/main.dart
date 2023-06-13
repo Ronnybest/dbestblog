@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-void main() {
+import 'global.dart';
+
+void main() async {
+  await Global.init();
   runApp(const MyApp());
 }
 

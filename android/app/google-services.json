@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1095298110761",
+    "project_id": "dbestblog-3eb67",
+    "storage_bucket": "dbestblog-3eb67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095298110761:android:cee572393368b17c019338",
+        "android_client_info": {
+          "package_name": "com.example.dbestblog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095298110761-3v0tr7pmskep506oeugggjn1u1futeth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH6hsWdvPAU4J8gbg5O9zeu5qEFiETZ24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095298110761-3v0tr7pmskep506oeugggjn1u1futeth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
