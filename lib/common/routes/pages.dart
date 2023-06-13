@@ -7,9 +7,10 @@ class AppPagesComplect {
   static List<PageEntity> Routes() {
     return [
       PageEntity(
-          route: AppPageNames.REGISTRATION_PAGE,
-          page: const RegistrationPage(),
-          bloc: RegistrationBloc),
+        route: AppPageNames.REGISTRATION_PAGE,
+        page: RegistrationPage(),
+        bloc: RegistrationBloc,
+      ),
     ];
   }
 }
