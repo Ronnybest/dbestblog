@@ -41,7 +41,7 @@ class RegistrationWidgets {
       required void Function() func}) {
     return type == 'confirm'
         ? FilledButton(onPressed: func, child: Text(text))
-        : OutlinedButton(onPressed: () {}, child: Text(text));
+        : OutlinedButton(onPressed: func, child: Text(text));
   }
 }
 

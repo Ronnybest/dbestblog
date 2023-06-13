@@ -1,0 +1,3 @@
+class HomeStates {
+  const HomeStates();
+}
