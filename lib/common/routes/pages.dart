@@ -1,4 +1,5 @@
 import 'package:dbestblog/common/routes/names.dart';
+import 'package:dbestblog/pages/registration/bloc/registration_bloc.dart';
 import 'package:dbestblog/pages/registration/registration_page.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class AppPagesComplect {
       PageEntity(
           route: AppPageNames.REGISTRATION_PAGE,
           page: const RegistrationPage(),
-          bloc: null),
+          bloc: RegistrationBloc),
     ];
   }
 }
