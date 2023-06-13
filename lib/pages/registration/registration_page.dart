@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
 
-class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Registration Page',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: RegistrationPage(),
-    );
-  }
+  State<RegistrationPage> createState() => _RegistrationPageState();
 }
 
-class RegistrationPage extends StatelessWidget {
+class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +22,7 @@ class RegistrationPage extends StatelessWidget {
             children: <Widget>[
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Nikname',
+                  labelText: 'Nickname',
                 ),
               ),
               SizedBox(height: 16.0),
@@ -46,6 +36,12 @@ class RegistrationPage extends StatelessWidget {
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
+                ),
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Confirm password',
                 ),
               ),
               SizedBox(height: 16.0),
