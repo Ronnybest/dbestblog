@@ -7,7 +7,7 @@ class AppPagesComplect {
     return [
       PageEntity(
           route: AppPageNames.REGISTRATION_PAGE,
-          page: const RegistrationPage(),
+          page:  RegistrationPage(),
           bloc: null),
     ];
   }
