@@ -1,9 +1,8 @@
-import 'package:dbestblog/common/routes/pages.dart';
-import 'package:dbestblog/pages/authorization/authorization_page.dart';
 import 'package:dbestblog/pages/registration/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'common/routes/pages.dart';
 import 'global.dart';
 
 void main() async {
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: AuthorizationPage(),
+        home: RegistrationPage(),
       ),
     );
   }
