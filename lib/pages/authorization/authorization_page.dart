@@ -1,18 +1,19 @@
+import 'package:dbestblog/pages/registration/registration_page.dart';
 import 'package:flutter/material.dart';
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+class AuthorizationPage extends StatefulWidget {
+  const AuthorizationPage({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<AuthorizationPage> createState() => _AuthorizationPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _AuthorizationPageState extends State<AuthorizationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration'),
+        title: Text('Authorization'),
       ),
       body: Center(
         child: Padding(
@@ -20,12 +21,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Nickname',
-                ),
-              ),
-              SizedBox(height: 16.0),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Email',
@@ -39,15 +34,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
               ),
               SizedBox(height: 16.0),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Confirm password',
-                ),
-              ),
-              SizedBox(height: 16.0),
               OutlinedButton(
-                child: Text('Register'),
+                child: Text('Login'),
                 onPressed: () {
+                  // Добавьте обработчик нажатия кнопки регистрации
+                },
+              ),
+              OutlinedButton(
+                child: Text('Registration'),
+                onPressed: () {
+                //Navigator.pushNamed(context, 'pages/registration/registration_page');     
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegistrationPage(),));           
                 },
               ),
             ],

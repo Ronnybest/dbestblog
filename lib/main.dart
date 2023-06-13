@@ -1,3 +1,4 @@
+import 'package:dbestblog/pages/authorization/authorization_page.dart';
 import 'package:dbestblog/pages/registration/registration_page.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RegistrationPage(),
+      home: AuthorizationPage(),
     );
   }
 }
