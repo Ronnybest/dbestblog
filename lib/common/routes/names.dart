@@ -5,4 +5,6 @@ class AppPageNames {
   static const String AUTHORIZATION_PAGE = '/authorization';
 
   static const String HOME_PAGE = '/home';
+
+  static const String APPLICATION = '/application';
 }

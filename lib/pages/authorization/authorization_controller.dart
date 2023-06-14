@@ -30,7 +30,8 @@ class AuthorizationController {
       }
 
       var user = credential.user;
-      Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil("/application", (route) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         buildSnackBar(msg: e.message.toString(), context: context);

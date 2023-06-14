@@ -1,4 +1,6 @@
 import 'package:dbestblog/common/routes/names.dart';
+import 'package:dbestblog/pages/application/application.dart';
+import 'package:dbestblog/pages/application/bloc/application_bloc.dart';
 import 'package:dbestblog/pages/authorization/authorization_page.dart';
 import 'package:dbestblog/pages/authorization/bloc/authorization_bloc.dart';
 import 'package:dbestblog/pages/home/bloc/home_bloc.dart';
@@ -25,6 +27,11 @@ class AppPagesComplect {
         route: AppPageNames.HOME_PAGE,
         page: const HomePage(),
         bloc: BlocProvider(create: (_) => HomeBloc()),
+      ),
+      PageEntity(
+        route: AppPageNames.APPLICATION,
+        page: const ApplicationPage(),
+        bloc: BlocProvider(create: (_) => AppBlocs()),
       ),
     ];
   }
