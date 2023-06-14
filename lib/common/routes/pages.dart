@@ -1,4 +1,6 @@
 import 'package:dbestblog/common/routes/names.dart';
+import 'package:dbestblog/common/values/constants.dart';
+import 'package:dbestblog/global.dart';
 import 'package:dbestblog/pages/application/application.dart';
 import 'package:dbestblog/pages/application/bloc/application_bloc.dart';
 import 'package:dbestblog/pages/authorization/authorization_page.dart';
@@ -14,14 +16,14 @@ class AppPagesComplect {
   static List<PageEntity> routes() {
     return [
       PageEntity(
-        route: AppPageNames.REGISTRATION_PAGE,
-        page: const RegistrationPage(),
-        bloc: BlocProvider(create: (_) => RegistrationBloc()),
+        route: AppPageNames.AUTHORIZATION_PAGE,
+        page: const AuthorizationPage(),
+        bloc: BlocProvider(create: (_) => AuthorizationBloc()),
       ),
       PageEntity(
         route: AppPageNames.REGISTRATION_PAGE,
-        page: const AuthorizationPage(),
-        bloc: BlocProvider(create: (_) => AuthorizationBloc()),
+        page: const RegistrationPage(),
+        bloc: BlocProvider(create: (_) => RegistrationBloc()),
       ),
       PageEntity(
         route: AppPageNames.HOME_PAGE,
@@ -51,6 +53,12 @@ class AppPagesComplect {
         return MaterialPageRoute(
             builder: (_) => result.first.page, settings: settings);
       }
+    }
+    if (Global.storageServices
+        .getStringFromKey(AppConstants().USER_INFO)
+        .isNotEmpty) {
+      return MaterialPageRoute(
+          builder: (_) => const ApplicationPage(), settings: settings);
     }
     return MaterialPageRoute(
         builder: (_) => const AuthorizationPage(), settings: settings);

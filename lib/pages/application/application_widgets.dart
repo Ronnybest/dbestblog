@@ -1,4 +1,5 @@
 import 'package:dbestblog/pages/home/home_page.dart';
+import 'package:dbestblog/pages/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 
 var bottovNavBarTabs = [
@@ -25,9 +26,7 @@ Widget buildPage(int index) {
     const Center(
       child: Text('add post'),
     ),
-    const Center(
-      child: Text('profile'),
-    ),
+    const ProfilePage(),
   ];
 
   return _widgets[index];

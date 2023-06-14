@@ -5,6 +5,7 @@ class RegistrationWidgets {
   RegistrationWidgets({required this.context});
   AppBar buildAppBar({required String titleText}) {
     return AppBar(
+      backgroundColor: Colors.white,
       centerTitle: true,
       title: Text(
         titleText,
