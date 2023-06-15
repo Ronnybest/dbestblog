@@ -25,7 +25,7 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
           body:Container(
                 margin: const EdgeInsets.only(top: 50),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       margin: EdgeInsets.only(top: 60),
@@ -57,11 +57,14 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
                         ],
                       ),
                     ),
-                  Column(
-                    children: [widgets.buildButton(
-                      text: 'Login', type: 'confirm', func: auth),
-                  widgets.buildButton(
-                      text: 'Registration', type: '', func: gotoReg),],
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Column(
+                      children: [widgets.buildButton(
+                        text: 'Login', type: 'confirm', func: auth),
+                    widgets.buildButton(
+                        text: 'Registration', type: '', func: gotoReg),],
+                    ),
                   )
                 ]),
               ),

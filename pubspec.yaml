@@ -36,6 +36,7 @@ dependencies:
   firebase_auth: ^4.6.2
   firebase_core: ^2.13.1
   firebase_storage: ^11.2.3
+  flutter_statusbarcolor_ns: ^0.5.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
