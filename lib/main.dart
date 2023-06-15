@@ -21,21 +21,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
-      // Color statusBarColor =
-      //     lightColorScheme?.background ?? _defaultLightColorScheme.background;
-      // if (Theme.of(context).brightness == Brightness.dark) {
-      //   statusBarColor = darkColorScheme?.onBackground ??
-      //       _defaultDarkColorScheme.onBackground;
-      // }
+      Color statusBarColor = lightColorScheme?.onBackground ??
+          _defaultLightColorScheme.onSecondary;
       if (Theme.of(context).brightness == Brightness.dark) {
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-      } else {
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+        statusBarColor = darkColorScheme?.onBackground ??
+            _defaultDarkColorScheme.onSecondary;
       }
-      // FlutterStatusbarcolor.setStatusBarColor((lightColorScheme!.background ??
-      //         _defaultLightColorScheme.background) ??
-      //     (darkColorScheme!.onBackground ??
-      //         _defaultDarkColorScheme.onBackground));
+      FlutterStatusbarcolor.setStatusBarColor(statusBarColor);
       return MultiBlocProvider(
         providers: [...AppPagesComplect.allBlocsProvider(context)],
         child: MaterialApp(

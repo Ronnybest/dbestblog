@@ -24,8 +24,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
           appBar: widgets.buildAppBar(titleText: 'Registration'),
           body: Container(
             margin: const EdgeInsets.only(top: 50),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
             child: Column(children: [
-              widgets.buildTextFields(
+                            widgets.buildTextFields(
                   hintText: 'Nickname',
                   type: 'input',
                   func: (value) => context
@@ -58,9 +62,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   func: (value) => context
                       .read<RegistrationBloc>()
                       .add(RePasswordEvent(rePassword: value!))),
-              widgets.buildButton(
+            ],)
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: widgets.buildButton(
                   text: 'Registration', type: 'confirm', func: register),
-            ]),
+          )
+            ]
+            ), 
           ),
         ),
       );
@@ -71,3 +81,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
     RegistrationController(context).registerWithEmail();
   }
 }
+
+
+
+
+
