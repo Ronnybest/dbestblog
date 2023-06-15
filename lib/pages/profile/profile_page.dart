@@ -86,17 +86,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 16,
                         ),
                         //log out button
-                        Container(
-                          width: 500,
-                          height: 30,
-                          //margin: EdgeInsets.only(right: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.red.withRed(180),
-                          ),
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () => removeUserData(context),
+                        GestureDetector(
+                          onTap: () => removeUserData(context),
+                          child: Container(
+                            width: 500,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.red.withRed(180),
+                            ),
+                            child: Center(
                               child: Text(
                                 'LogOut',
                                 style: TextStyle(

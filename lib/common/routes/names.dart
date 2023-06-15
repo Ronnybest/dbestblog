@@ -7,4 +7,6 @@ class AppPageNames {
   static const String HOME_PAGE = '/home';
 
   static const String APPLICATION = '/application';
+
+  static const String NEW_POST = '/new_post';
 }

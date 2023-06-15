@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class RegistrationWidgets {
   final BuildContext context;
   RegistrationWidgets({required this.context});
   AppBar buildAppBar({required String titleText}) {
     return AppBar(
+      //systemOverlayStyle: SystemUiOverlayStyle.light,
       bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
@@ -12,7 +14,7 @@ class RegistrationWidgets {
             //* height defines the thickness of the line
             height: .3,
           )),
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       centerTitle: true,
       title: Text(
         titleText,

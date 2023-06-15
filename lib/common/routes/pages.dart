@@ -7,6 +7,8 @@ import 'package:dbestblog/pages/authorization/authorization_page.dart';
 import 'package:dbestblog/pages/authorization/bloc/authorization_bloc.dart';
 import 'package:dbestblog/pages/home/bloc/home_bloc.dart';
 import 'package:dbestblog/pages/home/home_page.dart';
+import 'package:dbestblog/pages/new_post/bloc/new_post_bloc.dart';
+import 'package:dbestblog/pages/new_post/new_post_page.dart';
 import 'package:dbestblog/pages/registration/bloc/registration_bloc.dart';
 import 'package:dbestblog/pages/registration/registration_page.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,11 @@ class AppPagesComplect {
         route: AppPageNames.APPLICATION,
         page: const ApplicationPage(),
         bloc: BlocProvider(create: (_) => AppBlocs()),
+      ),
+      PageEntity(
+        route: AppPageNames.NEW_POST,
+        page: const NewPostPage(),
+        bloc: BlocProvider(create: (_) => NewPostBloc()),
       ),
     ];
   }
