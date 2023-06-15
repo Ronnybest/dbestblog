@@ -1,17 +1,24 @@
-import 'dart:convert';
-import 'dart:io';
-
+import 'package:dbestblog/common/routes/routes.dart';
 import 'package:flutter/material.dart';
+
+import '../../../common/values/constants.dart';
+import '../../../global.dart';
+
+void removeUserData(BuildContext context) {
+  Global.storageServices.removeFromKey(AppConstants().USER_INFO);
+  Navigator.of(context).pushNamedAndRemoveUntil(
+      AppPageNames.AUTHORIZATION_PAGE, (route) => false);
+}
 
 Widget buildCard(BuildContext context, String img) {
   return Container(
-    height: 646,
+    height: 645,
     width: 500,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Theme.of(context).colorScheme.primaryContainer),
     child: Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: Column(children: [
         Container(
           width: 180,
@@ -19,22 +26,18 @@ Widget buildCard(BuildContext context, String img) {
           child: CircleAvatar(
             minRadius: 10,
             maxRadius: 200,
-            foregroundImage: FileImage(decodeBase64ToFile(img)),
-            backgroundColor: Colors.red,
+            foregroundImage: NetworkImage(img),
+            backgroundColor: Colors.transparent,
+          ),
+        ),
+        GestureDetector(
+          onTap: () => removeUserData(context),
+          child: Container(
+            decoration: BoxDecoration(color: Colors.amber),
+            child: Text('LogOut'),
           ),
         ),
       ]),
     ),
   );
-}
-
-File decodeBase64ToFile(String img) {
-  // Декодируем строку Base64 в байты
-  List<int> bytes = base64Decode(img);
-
-  // Создаем временный файл и записываем в него данные
-  File decodedFile = File('${Directory.systemTemp.path}/decoded_image.jpg');
-  decodedFile.writeAsBytesSync(bytes);
-
-  return decodedFile;
 }
