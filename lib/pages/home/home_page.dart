@@ -27,38 +27,37 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     RegistrationWidgets widgets = RegistrationWidgets(context: context);
-    return BlocBuilder<HomeBloc, HomeStates>(
-      builder: (context, state) {
-        return BlocBuilder<HomeBloc, HomeStates>(
-          builder: (context, state) {
-            return Container(
-              child: Scaffold(
-                appBar: widgets.buildAppBar(titleText: 'Main page'),
-                body: Container(
-                  //margin: const EdgeInsets.only(top: 50),
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return GestureDetector(
-                              onTap: () {},
-                              child: postGrid(state.posts[index]),
-                            );
-                          },
-                          childCount: state.posts.length,
-                        ),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 1, mainAxisExtent: 10),
-                      ),
-                    ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: widgets.buildAppBar(titleText: 'Main page'),
+        body: BlocBuilder<HomeBloc, HomeStates>(
+          builder: (context, state) => Container(
+            margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+            child: CustomScrollView(
+              slivers: [
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 10,
                   ),
                 ),
-              ),
-            );
-          },
-        );
-      },
+                SliverGrid(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return GestureDetector(
+                        onTap: () {},
+                        child: postGrid(state.posts[index]),
+                      );
+                    },
+                    childCount: state.posts.length,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1, mainAxisSpacing: 10),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

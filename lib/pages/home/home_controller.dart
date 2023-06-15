@@ -8,7 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeController {
   final BuildContext context;
   HomeController({required this.context});
-
+  final Map<String, dynamic> authorInfo = {
+    'avatar': null,
+    'name': null,
+  };
   Future<void> init() async {
     print('Home controller init');
     PostObj postObj = PostObj();
@@ -18,8 +21,9 @@ class HomeController {
     for (final postDoc in postSnapshot.docs) {
       final post = postDoc.data();
       final authorId = post['author_id'];
-      final authorName = await getAuthorName(authorId);
-      post['author_name'] = authorName;
+      await getAuthorName(authorId);
+      post['author_name'] = authorInfo['name'];
+      postObj.auhtor_avatar = authorInfo['avatar'];
       postObj.author_id = post['author_id'];
       postObj.image_link = post['image_link'];
       postObj.description = post['description'];
@@ -30,12 +34,14 @@ class HomeController {
     context.read<HomeBloc>().add(HomePost(posts));
   }
 
-  Future<String> getAuthorName(String authorId) async {
+  Future<Map<String, dynamic>> getAuthorName(String authorId) async {
     final authorDoc = await FirebaseFirestore.instance
         .collection('Users')
         .doc(authorId)
         .get();
     final authorData = authorDoc.data();
-    return authorData!['name'] ?? '';
+    authorInfo['avatar'] = authorData!['avatarLink'];
+    authorInfo['name'] = authorData['name'];
+    return authorInfo;
   }
 }
