@@ -12,7 +12,7 @@ class RegistrationWidgets {
             //* height defines the thickness of the line
             height: .3,
           )),
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       centerTitle: true,
       title: Text(
         titleText,
