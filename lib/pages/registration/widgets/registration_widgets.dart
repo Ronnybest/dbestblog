@@ -5,6 +5,13 @@ class RegistrationWidgets {
   RegistrationWidgets({required this.context});
   AppBar buildAppBar({required String titleText}) {
     return AppBar(
+      bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+            //* height defines the thickness of the line
+            height: .3,
+          )),
       backgroundColor: Colors.white,
       centerTitle: true,
       title: Text(

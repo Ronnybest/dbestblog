@@ -21,12 +21,15 @@ class _ApplicationPageState extends State<ApplicationPage> {
           child: SafeArea(
               child: Scaffold(
             body: buildPage(state.index),
-            bottomNavigationBar: NavigationBar(
-              selectedIndex: state.index,
-              onDestinationSelected: (value) {
-                context.read<AppBlocs>().add(TriggerAppEvent(value));
-              },
-              destinations: bottovNavBarTabs,
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(),
+              child: NavigationBar(
+                selectedIndex: state.index,
+                onDestinationSelected: (value) {
+                  context.read<AppBlocs>().add(TriggerAppEvent(value));
+                },
+                destinations: bottovNavBarTabs,
+              ),
             ),
           )),
         );

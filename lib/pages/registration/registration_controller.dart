@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbestblog/common/models/user.dart';
 import 'package:dbestblog/common/values/constants.dart';
@@ -8,6 +9,7 @@ import 'package:dbestblog/global.dart';
 import 'package:dbestblog/pages/registration/bloc/registration_bloc.dart';
 import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +58,7 @@ class RegistrationController {
         UserObj userObj = UserObj(
             name: username,
             email: credential.user!.email,
-            avatarLink: await imageToBase64('assets/avatar.jpg'),
+            avatarLink: await getAvatarLink(),
             bio: 'Simple bio');
         final _db = FirebaseFirestore.instance;
         await _db.collection('Users').add(userObj.toMap());
@@ -83,11 +85,25 @@ class RegistrationController {
     }
   }
 
-  Future<String> imageToBase64(String imagePath) async {
-    final byteData = await rootBundle.load(imagePath);
-    final bytes = byteData.buffer
-        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
-    final base64String = base64Encode(bytes);
-    return base64String;
+  Future<String> getAvatarLink() async {
+    final storageRef = FirebaseStorage.instance.ref().child('avatar.jpg');
+    final downloadURL = await storageRef.getDownloadURL();
+    return downloadURL;
+  }
+
+  Future<String> assetToFile(String assetPath) async {
+    final byteData = await rootBundle.load(assetPath);
+    final file = File.fromRawPath(byteData.buffer.asUint8List());
+    return uploadPhotoToFirebaseStorage(file);
+  }
+
+  Future<String> uploadPhotoToFirebaseStorage(File imageFile) async {
+    Reference storageReference =
+        FirebaseStorage.instance.ref().child(imageFile.path);
+    UploadTask uploadTask = storageReference.putFile(imageFile);
+    TaskSnapshot storageTaskSnapshot =
+        await uploadTask.whenComplete(() => null);
+    print(await storageTaskSnapshot.ref.getDownloadURL());
+    return await storageTaskSnapshot.ref.getDownloadURL();
   }
 }

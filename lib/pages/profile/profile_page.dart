@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:dbestblog/pages/profile/profie_controller.dart';
 import 'package:dbestblog/pages/profile/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
     RegistrationWidgets widgets = RegistrationWidgets(context: context);
     return SafeArea(
         child: Scaffold(
-      backgroundColor:
-          Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.55),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: widgets.buildAppBar(titleText: 'Profile'),
       body: Container(
           padding: EdgeInsets.all(16),

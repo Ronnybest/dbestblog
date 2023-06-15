@@ -1,8 +1,14 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbestblog/pages/authorization/bloc/authorization_bloc.dart';
 import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../common/values/constants.dart';
+import '../../global.dart';
 
 class AuthorizationController {
   final BuildContext context;
@@ -30,6 +36,9 @@ class AuthorizationController {
       }
 
       var user = credential.user;
+      var userData = await getUserData(user!);
+      Global.storageServices
+          .setStringToKey(AppConstants().USER_INFO, jsonEncode(userData));
       Navigator.of(context)
           .pushNamedAndRemoveUntil("/application", (route) => false);
     } on FirebaseAuthException catch (e) {
@@ -40,6 +49,17 @@ class AuthorizationController {
       } else if (e.code == "invalid-email") {
         buildSnackBar(msg: e.message.toString(), context: context);
       }
+    }
+  }
+
+  Future<Map<String, dynamic>> getUserData(User user) async {
+    final collectionRef = FirebaseFirestore.instance.collection('Users');
+    final querrySnapshot =
+        await collectionRef.where('email', isEqualTo: user.email).get();
+    if (querrySnapshot.docs.isNotEmpty) {
+      return querrySnapshot.docs.first.data();
+    } else {
+      return {};
     }
   }
 }
