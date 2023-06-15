@@ -10,34 +10,23 @@ void removeUserData(BuildContext context) {
       AppPageNames.AUTHORIZATION_PAGE, (route) => false);
 }
 
-Widget buildCard(BuildContext context, String img) {
-  return Container(
-    height: 645,
-    width: 500,
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Theme.of(context).colorScheme.primaryContainer),
-    child: Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: Column(children: [
-        Container(
-          width: 180,
-          height: 180,
-          child: CircleAvatar(
-            minRadius: 10,
-            maxRadius: 200,
-            foregroundImage: NetworkImage(img),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => removeUserData(context),
-          child: Container(
-            decoration: BoxDecoration(color: Colors.amber),
-            child: Text('LogOut'),
-          ),
-        ),
-      ]),
+Widget buildAvatar(BuildContext context, String img) {
+  return CircleAvatar(
+    minRadius: 10,
+    maxRadius: 200,
+    foregroundImage: NetworkImage(img),
+    backgroundColor: Colors.transparent,
+  );
+}
+
+Widget buildText(
+    String text, String fontFamily, double fontSize, FontWeight fontWeight) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
     ),
   );
 }
