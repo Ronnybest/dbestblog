@@ -7,5 +7,8 @@ class NewPostBloc extends Bloc<NewPostEvents, NewPostStates> {
     on<ImageNewPost>((event, emit) => emit(state.copyWith(image: event.image)));
     on<DescriptionNewPost>(
         (event, emit) => emit(state.copyWith(description: event.description)));
+    on<EmptyImage>(
+      (event, emit) => emit(state.deleteImage(description: event.description)),
+    );
   }
 }
