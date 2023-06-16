@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(context).colorScheme.secondaryContainer,
                             ),
                             padding: EdgeInsets.all(4),
                             child: postGrid(state.posts[index]),
