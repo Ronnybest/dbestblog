@@ -8,9 +8,17 @@ Widget postGrid(PostObj item) {
     child: Column(
       //mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text(item.author_name!),
+        Row(children: [
+          CircleAvatar(
+            minRadius: 20,
+            maxRadius: 20,
+            foregroundImage: NetworkImage(item.auhtor_avatar!),
+            backgroundColor: Colors.transparent,
+          ),
+          Text(item.author_name!),
+        ]),
         Container(
-          //height: 00,
+          height: 300,
           child: Image(
             image: NetworkImage(item.image_link!),
             fit: BoxFit.cover,

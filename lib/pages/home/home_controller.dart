@@ -14,7 +14,6 @@ class HomeController {
   };
   Future<void> init() async {
     print('Home controller init');
-    PostObj postObj = PostObj();
     List<PostObj> posts = [];
     final postSnapshot =
         await FirebaseFirestore.instance.collection('Posts').get();
@@ -22,6 +21,9 @@ class HomeController {
       final post = postDoc.data();
       final authorId = post['author_id'];
       await getAuthorName(authorId);
+
+      PostObj postObj = PostObj(); // Создаем новый экземпляр на каждой итерации
+
       post['author_name'] = authorInfo['name'];
       postObj.auhtor_avatar = authorInfo['avatar'];
       postObj.author_id = post['author_id'];
@@ -31,6 +33,7 @@ class HomeController {
       print(postObj.author_name);
       posts.add(postObj);
     }
+
     context.read<HomeBloc>().add(HomePost(posts));
   }
 

@@ -61,12 +61,14 @@ class RegistrationController {
             avatarLink: await getAvatarLink(),
             bio: 'Simple bio');
         final _db = FirebaseFirestore.instance;
-        await _db.collection('Users').add(userObj.toMap());
-
+        DocumentReference dr =
+            await _db.collection('Users').add(userObj.toMap());
+        userObj.id = dr.id;
+        await _db.collection('Users').doc(dr.id).update({'id': dr.id});
         Global.storageServices.setStringToKey(
             AppConstants().USER_INFO, jsonEncode(userObj.toMap()));
-        // print(
-        //     Global.storageServices.getStringFromKey(AppConstants().USER_INFO));
+        print(jsonEncode(
+            Global.storageServices.getStringFromKey(AppConstants().USER_INFO)));
         buildSnackBar(
             msg:
                 "Verify your account by link in message  which sent to your email",

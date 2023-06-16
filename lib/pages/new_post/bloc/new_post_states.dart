@@ -1,7 +1,13 @@
-class NewPostStates {
-  const NewPostStates();
+import 'dart:io';
 
-  // NewPostStates copyWith() {
-  //   return ;
-  // }
+class NewPostStates {
+  const NewPostStates({this.image, this.description = ''});
+  final File? image;
+  final String description;
+
+  NewPostStates copyWith({File? image, String? description}) {
+    return NewPostStates(
+        image: image ?? this.image,
+        description: description ?? this.description);
+  }
 }
