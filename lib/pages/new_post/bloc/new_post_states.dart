@@ -10,4 +10,11 @@ class NewPostStates {
         image: image ?? this.image,
         description: description ?? this.description);
   }
+
+  NewPostStates deleteImage({String? description}) {
+    return NewPostStates(
+      image: null,
+      description: description ?? this.description,
+    );
+  }
 }

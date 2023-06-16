@@ -13,3 +13,8 @@ class DescriptionNewPost extends NewPostEvents {
   const DescriptionNewPost(this.description);
   final String description;
 }
+
+class EmptyImage extends NewPostEvents {
+  const EmptyImage(this.description);
+  final String description;
+}

@@ -15,8 +15,10 @@ class HomeController {
   Future<void> init() async {
     print('Home controller init');
     List<PostObj> posts = [];
-    final postSnapshot =
-        await FirebaseFirestore.instance.collection('Posts').get();
+    final postSnapshot = await FirebaseFirestore.instance
+        .collection('Posts')
+        .orderBy('upload_time', descending: true)
+        .get();
     for (final postDoc in postSnapshot.docs) {
       final post = postDoc.data();
       final authorId = post['author_id'];
