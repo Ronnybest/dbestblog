@@ -20,6 +20,7 @@ Widget postGrid(PostObj item) {
             foregroundImage: NetworkImage(item.auhtor_avatar!),
             backgroundColor: Colors.transparent,
           ),
+          Text('  '),
           Text(item.author_name!),
         ]),
         Container(

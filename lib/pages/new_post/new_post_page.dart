@@ -24,21 +24,28 @@ class _NewPostPageState extends State<NewPostPage> {
         builder: (context, state) => Stack(
           children: [
             SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.all(12),
-                child: Container(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  height: 350,
-                  child: TextField(
-                    onChanged: (value) => context
-                        .read<NewPostBloc>()
-                        .add(DescriptionNewPost(value)),
-                    expands: true,
-                    maxLines: null,
-                  ),
-                ),
-              ),
-            ),
+  child: Container(
+    margin: EdgeInsets.all(12),
+    child: Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      height: 350,
+      child: TextField(
+        onChanged: (value) => context
+            .read<NewPostBloc>()
+            .add(DescriptionNewPost(value)),
+        expands: true,
+        maxLines: null,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
+      ),
+    ),
+  ),
+),
+
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
@@ -51,18 +58,26 @@ class _NewPostPageState extends State<NewPostPage> {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: () => _newpostcontr.uploadPost(),
-              child: Container(
-                width: 340,
-                height: 30,
-                color: Colors.red,
-                child: Text('Upload'),
-              ),
-            )
           ],
+        ),
+      ),
+      floatingActionButton: Align(
+        alignment: AlignmentDirectional.bottomStart,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical:0, horizontal: 30),
+          child: FilledButton(
+            onPressed: () => _newpostcontr.uploadPost(),
+            style: FilledButton.styleFrom(
+              minimumSize: Size(320, 55),
+              elevation: 0,
+            ),
+            child: Text('Upload'),
+          ),
         ),
       ),
     );
   }
 }
+
+
+
