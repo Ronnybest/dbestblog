@@ -7,7 +7,7 @@ import 'package:flutter_advanced_networkimage_2/transition.dart';
 
 Widget postGrid(PostObj item) {
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    //crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisSize: MainAxisSize.min,
     children: [
       Row(
@@ -42,6 +42,7 @@ Widget postGrid(PostObj item) {
                 width: 300.0,
                 height: 300.0,
                 enableRefresh: true,
+
                 loadingWidgetBuilder: (
                   context,
                   progress,

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dbestblog/pages/new_post/bloc/new_post_bloc.dart';
 import 'package:dbestblog/pages/new_post/bloc/new_post_events.dart';
 import 'package:dbestblog/pages/new_post/bloc/new_post_states.dart';
@@ -9,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'new_post_controller.dart';
 
 class NewPostPage extends StatefulWidget {
-  const NewPostPage({super.key});
+  const NewPostPage({Key? key});
 
   @override
   State<NewPostPage> createState() => _NewPostPageState();
@@ -28,17 +26,21 @@ class _NewPostPageState extends State<NewPostPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: const EdgeInsets.all(12),
+                
+                margin: const EdgeInsets.all(15),
                 child: SingleChildScrollView(
                   child: Container(
                     color: Theme.of(context).colorScheme.primaryContainer,
-                    height: 350,
+                    height: 360,
                     child: TextField(
                       onChanged: (value) => context
                           .read<NewPostBloc>()
                           .add(DescriptionNewPost(value)),
                       expands: true,
                       maxLines: null,
+                              decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
                     ),
                   ),
                 ),
@@ -67,24 +69,36 @@ class _NewPostPageState extends State<NewPostPage> {
                       )
                     : Container(),
               ),
-              GestureDetector(
-                onTap: () => _newpostcontr.uploadPost(),
-                child: Container(
-                  width: 340,
-                  height: 30,
-                  color: Colors.red,
-                  child: Text('Upload'),
-                ),
-              )
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _newpostcontr.selectImage();
-        },
-        child: Icon(Icons.photo),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.only(left: 30, right: 30, bottom: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: FilledButton(
+                onPressed: () => _newpostcontr.uploadPost(),
+                style: FilledButton.styleFrom(
+                  minimumSize: Size(300, 55),
+                  elevation: 0,
+                ),
+                child: Text('Upload'),
+              ),
+            ),
+            SizedBox(width: 16),
+            FloatingActionButton(
+              onPressed: () {
+                _newpostcontr.selectImage();
+              },
+              child: Icon(Icons.photo),
+            ),
+          ],
+        ),
       ),
     );
   }

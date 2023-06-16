@@ -8,7 +8,7 @@ import '../registration/widgets/registration_widgets.dart';
 import 'bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,12 +16,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeController _homeController;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _homeController = HomeController(context: context);
     _homeController.init();
+  }
+
+  Future<void> _refreshPage() async {
+    _homeController.init(); // Перезагрузка страницы
   }
 
   @override
@@ -34,47 +38,46 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             'DBestBlog',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 32,
               fontFamily: 'Kalam',
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
         body: BlocBuilder<HomeBloc, HomeStates>(
-          builder: (context, state) => Container(
-            margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-            child: CustomScrollView(
-              slivers: [
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 10,
-                  ),
-                ),
-                SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
+          builder: (context, state) => RefreshIndicator(
+            onRefresh: _refreshPage,
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        mainAxisSpacing: 10,
+                      ),
+                      itemCount: state.posts.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Theme.of(context).colorScheme.primaryContainer,
+                            ),
+                            padding: EdgeInsets.all(4),
+                            child: postGrid(state.posts[index]),
                           ),
-                          padding: EdgeInsets.all(
-                              4), // Добавляем отступы по 2 пикселя с каждой стороны
-                          child: postGrid(state.posts[index]),
-                        ),
-                      );
-                    },
-                    childCount: state.posts.length,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    mainAxisSpacing: 10,
-                  ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
