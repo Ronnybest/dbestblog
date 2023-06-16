@@ -29,7 +29,14 @@ class _HomePageState extends State<HomePage> {
     RegistrationWidgets widgets = RegistrationWidgets(context: context);
     return SafeArea(
       child: Scaffold(
-        appBar: widgets.buildAppBar(titleText: 'Main page'),
+        appBar: AppBar(centerTitle: true,
+        title: Text('DBestBlog', style: TextStyle(
+                    fontSize: 28,
+                    fontFamily: 'Kalam',
+                    fontWeight: FontWeight.bold,
+),
+),
+),
         body: BlocBuilder<HomeBloc, HomeStates>(
           builder: (context, state) => Container(
             margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
@@ -40,19 +47,29 @@ class _HomePageState extends State<HomePage> {
                     height: 10,
                   ),
                 ),
-                SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: postGrid(state.posts[index]),
-                      );
-                    },
-                    childCount: state.posts.length,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1, mainAxisSpacing: 10),
-                ),
+SliverGrid(
+  delegate: SliverChildBuilderDelegate(
+    (context, index) {
+      return GestureDetector(
+  onTap: () {},
+  child: Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      color: Theme.of(context).colorScheme.primaryContainer,
+    ),
+    padding: EdgeInsets.all(4), // Добавляем отступы по 2 пикселя с каждой стороны
+    child: postGrid(state.posts[index]),
+  ),
+);
+    },
+    childCount: state.posts.length,
+  ),
+  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 1,
+    mainAxisSpacing: 10,
+  ),
+),
+
               ],
             ),
           ),
