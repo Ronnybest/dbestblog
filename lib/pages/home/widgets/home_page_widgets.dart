@@ -8,12 +8,11 @@ import 'package:flutter_advanced_networkimage_2/transition.dart';
 Widget postGrid({required PostObj item, required BuildContext context}) {
   return IntrinsicHeight(
     child: Container(
-      //height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Theme.of(context).colorScheme.secondaryContainer,
       ),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.fromLTRB(10, 10, 10, 0), // Добавление отступа 20px снизу
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -26,16 +25,17 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
                 backgroundColor: Colors.transparent,
               ),
               SizedBox(width: 8),
-              Text(item.author_name!),
+              Text(item.author_name!, style: TextStyle(
+              fontSize: 16,
+              fontFamily: 'ABeeZee',
+              fontWeight: FontWeight.normal,
+            ), ),
             ],
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           if (item.image_link != '')
             SizedBox(
               height: 200,
-              //width: double.infinity,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
                 child: TransitionToImage(
@@ -70,13 +70,14 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
                 ),
               ),
             ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           Text(
             item.description!,
-            style: TextStyle(fontSize: 16),
-            maxLines: 4,
+            style: TextStyle(
+              fontSize: 14,
+              fontFamily: 'ABeeZee',
+              fontWeight: FontWeight.normal,
+            ),            maxLines: 2,
             overflow: TextOverflow.fade,
           ),
         ],
@@ -84,3 +85,4 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
     ),
   );
 }
+

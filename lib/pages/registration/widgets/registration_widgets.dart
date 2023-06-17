@@ -20,6 +20,7 @@ class RegistrationWidgets {
         titleText,
         style: TextStyle(
           color: Theme.of(context).colorScheme.onSurface,
+          fontFamily: 'ABeeZee',
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -35,6 +36,10 @@ class RegistrationWidgets {
       child: TextField(
         obscureText: type == "pass" ? true : false,
         onChanged: (value) => func(value),
+        style: TextStyle(
+          fontFamily: 'ABeeZee',
+          fontWeight: FontWeight.normal,
+          ),
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -50,9 +55,9 @@ class RegistrationWidgets {
       required String type,
       required void Function() func}) {
     return type == 'confirm'
-        ? FilledButton(onPressed: func, child: Text(text), style:  FilledButton.styleFrom(minimumSize: Size( 370, 40),)  //////// HERE
+        ? FilledButton(onPressed: func, child: Text(text, style: TextStyle(fontFamily: 'ABeeZee', fontWeight: FontWeight.normal,),), style:  FilledButton.styleFrom(minimumSize: Size( 370, 40),)  //////// HERE
 , )
-        : OutlinedButton(onPressed: func, child: Text(text), style: OutlinedButton.styleFrom(minimumSize: Size( 370, 40)));
+        : OutlinedButton(onPressed: func, child: Text(text, style: TextStyle(fontFamily: 'ABeeZee', fontWeight: FontWeight.normal,),), style: OutlinedButton.styleFrom(minimumSize: Size( 370, 40)));
   }
 }
 
