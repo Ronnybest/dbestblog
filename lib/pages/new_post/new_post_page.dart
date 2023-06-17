@@ -30,7 +30,7 @@ class _NewPostPageState extends State<NewPostPage> {
                 margin: const EdgeInsets.all(15),
                 child: SingleChildScrollView(
                   child: Container(
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Theme.of(context).colorScheme.secondaryContainer,
                     height: 360,
                     child: TextField(
                       onChanged: (value) => context
