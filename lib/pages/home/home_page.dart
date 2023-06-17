@@ -52,8 +52,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 1, // Задаем количество столбцов
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  childAspectRatio:
-                      1, // Отношение ширины к высоте каждого элемента
+                  childAspectRatio:1.2, // Отношение ширины к высоте каждого элемента
                 ),
                 itemCount: state.posts.length,
                 itemBuilder: (context, index) {
