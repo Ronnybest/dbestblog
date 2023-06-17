@@ -53,6 +53,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       builder: (context, state) => WillPopScope(
         onWillPop: () async {
           context.read<EditProfileBloc>().add(const ResetBloc());
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/application', (route) => false);
           return true;
         },
         child: Scaffold(

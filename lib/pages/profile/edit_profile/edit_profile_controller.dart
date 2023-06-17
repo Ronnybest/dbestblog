@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbestblog/common/models/user.dart';
 import 'package:dbestblog/global.dart';
+import 'package:dbestblog/pages/profile/bloc/profile_bloc.dart';
+import 'package:dbestblog/pages/profile/bloc/profile_events.dart';
 import 'package:dbestblog/pages/profile/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +54,7 @@ class EditProfileController {
     UserObj newData = UserObj.fromMap(await getDataById('Users', userId!));
     Global.storageServices
         .setStringToKey(AppConstants().USER_INFO, jsonEncode(newData.toMap()));
+    context.read<ProfileBloc>().add(UpdateProfile(newData));
   }
 
   Future<Map<String, dynamic>> getDataById(
