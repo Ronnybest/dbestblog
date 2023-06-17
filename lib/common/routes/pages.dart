@@ -9,6 +9,8 @@ import 'package:dbestblog/pages/home/bloc/home_bloc.dart';
 import 'package:dbestblog/pages/home/home_page.dart';
 import 'package:dbestblog/pages/new_post/bloc/new_post_bloc.dart';
 import 'package:dbestblog/pages/new_post/new_post_page.dart';
+import 'package:dbestblog/pages/profile/edit_profile/bloc/edit_profile_bloc.dart';
+import 'package:dbestblog/pages/profile/edit_profile/edit_profile_page.dart';
 import 'package:dbestblog/pages/registration/bloc/registration_bloc.dart';
 import 'package:dbestblog/pages/registration/registration_page.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,11 @@ class AppPagesComplect {
         route: AppPageNames.NEW_POST,
         page: const NewPostPage(),
         bloc: BlocProvider(create: (_) => NewPostBloc()),
+      ),
+      PageEntity(
+        route: AppPageNames.EDIT_PROFILE,
+        page: const EditProfilePage(),
+        bloc: BlocProvider(create: (_) => EditProfileBloc()),
       ),
     ];
   }

@@ -4,8 +4,6 @@ import 'package:dbestblog/pages/home/widgets/home_page_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../common/models/post.dart';
-import '../registration/widgets/registration_widgets.dart';
 import 'bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -31,7 +29,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    RegistrationWidgets widgets = RegistrationWidgets(context: context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

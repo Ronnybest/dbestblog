@@ -9,4 +9,6 @@ class AppPageNames {
   static const String APPLICATION = '/application';
 
   static const String NEW_POST = '/new_post';
+
+  static const String EDIT_PROFILE = '/edit_profile';
 }

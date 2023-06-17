@@ -2,9 +2,6 @@ import 'package:dbestblog/pages/profile/profie_controller.dart';
 import 'package:dbestblog/pages/profile/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
 
-import '../registration/widgets/registration_widgets.dart';
-
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -24,42 +21,41 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    RegistrationWidgets widgets = RegistrationWidgets(context: context);
     return SafeArea(
         child: Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         actions: [
           PopupMenuButton<String>(
-  itemBuilder: (context) => [
-    PopupMenuItem<String>(
-      value: 'Settings',
-      child: Text('Settings'),
-    ),
-    PopupMenuItem<String>(
-      value: 'Logout',
-      child: Text('Log out'),
-    ),
-  ],
-  onSelected: (value) {
-    switch(value){
-      case 'Logout':
-            removeUserData(context);       
-      case 'Settings':
-            print(Text('Settings'));
-    }
-}
-          )
+              itemBuilder: (context) => [
+                    const PopupMenuItem<String>(
+                      value: 'Edit profile',
+                      child: Text('Edit profile'),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: 'Logout',
+                      child: Text('Log out'),
+                    ),
+                  ],
+              onSelected: (value) {
+                switch (value) {
+                  case 'Logout':
+                    removeUserData(context);
+                  case 'Edit profile':
+                    Navigator.of(context).pushNamed('/edit_profile');
+                }
+              })
         ],
         centerTitle: true,
-        title: Text('Profile',
-         style: TextStyle(
-          fontWeight: FontWeight.bold,
-),
-),
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               Container(
@@ -81,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: buildAvatar(
                               context, profileController.UserObj!.avatarLink!),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         //name
@@ -90,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: buildText(profileController.UserObj!.name!,
                               'ABeeZee', 20, FontWeight.normal),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 9,
                         ),
                         //email
@@ -99,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: buildText(profileController.UserObj!.email!,
                               'ABeeZee', 12, FontWeight.normal),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
 
@@ -113,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'ABeeZee', 16, FontWeight.normal),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         //log out button
