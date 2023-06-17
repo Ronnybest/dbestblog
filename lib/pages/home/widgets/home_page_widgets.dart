@@ -42,7 +42,6 @@ Widget postGrid(PostObj item) {
                 width: 300.0,
                 height: 300.0,
                 enableRefresh: true,
-
                 loadingWidgetBuilder: (
                   context,
                   progress,
@@ -62,7 +61,11 @@ Widget postGrid(PostObj item) {
           : SizedBox(
               height: 0,
             ),
-      Container(child: Text(item.description!)),
+      Container(
+          child: Text(
+        item.description!,
+        style: TextStyle(overflow: TextOverflow.fade),
+      )),
     ],
   );
 }
