@@ -4,6 +4,7 @@ import 'package:dbestblog/pages/home/widgets/home_page_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../common/models/post.dart';
 import '../registration/widgets/registration_widgets.dart';
 import 'bloc/home_bloc.dart';
 
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'DBestBlog',
             style: TextStyle(
               fontSize: 32,
@@ -47,36 +48,23 @@ class _HomePageState extends State<HomePage> {
         body: BlocBuilder<HomeBloc, HomeStates>(
           builder: (context, state) => RefreshIndicator(
             onRefresh: _refreshPage,
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                child: Column(
-                  children: [
-                    SizedBox(height: 10),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        mainAxisSpacing: 10,
-                      ),
-                      itemCount: state.posts.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Theme.of(context).colorScheme.secondaryContainer,
-                            ),
-                            padding: EdgeInsets.all(4),
-                            child: postGrid(state.posts[index]),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1, // Задаем количество столбцов
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio:
+                      1, // Отношение ширины к высоте каждого элемента
                 ),
+                itemCount: state.posts.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {},
+                    child: postGrid(item: state.posts[index], context: context),
+                  );
+                },
               ),
             ),
           ),
