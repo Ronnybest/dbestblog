@@ -74,6 +74,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               'Edit profile',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
+                fontFamily: 'ABeeZee',
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -152,28 +153,57 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
+                Text(
+                  'Nickname',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface,
+                fontFamily: 'ABeeZee',
+                fontWeight: FontWeight.bold,),
+                ),                
                 buildTextField(
                   _nicknameController,
                   (value) => context.read<EditProfileBloc>().add(
                         ChangeNickname(value),
                       ),
                 ),
-                buildTextField(
-                  _bioController,
-                  (value) => context.read<EditProfileBloc>().add(
-                        ChangeBio(value),
-                      ),
+                SizedBox(height: 10),
+                Text(
+                  'about me',
+                  //textAlign: TextAlign.left,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface,
+                fontFamily: 'ABeeZee',
+                fontWeight: FontWeight.bold,
                 ),
+                ),   
+                  buildTextField(
+                    _bioController,
+                    (value) => context.read<EditProfileBloc>().add(
+                          ChangeBio(value),
+                        ),
+                  ),
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.check),
-            onPressed: () => _editProfilePage.changeInfo().then(
-                  (value) => buildSnackBar(
-                      context: context, msg: 'User data changed successfully!'),
-                ),
-          ),
+          floatingActionButton: FilledButton(
+  child: Text(
+    'Save',
+    style: TextStyle(
+      fontFamily: 'ABeeZee',
+      fontWeight: FontWeight.normal,
+    ),
+  ),
+  style: FilledButton.styleFrom(
+    minimumSize: Size(380, 40),
+  ),
+  onPressed: () {
+    _editProfilePage.changeInfo().then((value) {
+      buildSnackBar(context: context, msg: 'User data changed successfully!');
+      Navigator.of(context).pushReplacementNamed('.../profile_page');
+    });
+  },
+),
+
         ),
       ),
     );
@@ -182,9 +212,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget buildTextField(
       TextEditingController controller, void Function(String value)? func) {
     return TextField(
+      style:  TextStyle(color: Theme.of(context).colorScheme.onSurface,
+                fontFamily: 'ABeeZee',
+                fontWeight: FontWeight.normal,
+                ),
       onChanged: func,
       controller: controller,
-      decoration: InputDecoration(),
+      decoration: InputDecoration(border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          ),
     );
   }
 

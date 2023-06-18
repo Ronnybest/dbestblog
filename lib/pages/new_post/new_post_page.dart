@@ -33,6 +33,10 @@ class _NewPostPageState extends State<NewPostPage> {
                     color: Theme.of(context).colorScheme.secondaryContainer,
                     height: 360,
                     child: TextField(
+                      style:  TextStyle(
+                fontFamily: 'ABeeZee',
+                fontWeight: FontWeight.normal,
+                ),
                       onChanged: (value) => context
                           .read<NewPostBloc>()
                           .add(DescriptionNewPost(value)),
@@ -87,7 +91,10 @@ class _NewPostPageState extends State<NewPostPage> {
                   minimumSize: Size(300, 55),
                   elevation: 0,
                 ),
-                child: Text('Upload'),
+                child: Text('Upload',style:  TextStyle(
+                fontFamily: 'ABeeZee',
+                fontWeight: FontWeight.normal,
+                ),),
               ),
             ),
             SizedBox(width: 16),

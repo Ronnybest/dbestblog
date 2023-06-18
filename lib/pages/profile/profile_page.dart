@@ -35,11 +35,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   itemBuilder: (context) => [
                         const PopupMenuItem<String>(
                           value: 'Edit profile',
-                          child: Text('Edit profile'),
+                          child: Text('Edit profile',style:  TextStyle(
+                fontFamily: 'ABeeZee',
+                fontWeight: FontWeight.normal,
+                ),
+                ),
                         ),
                         const PopupMenuItem<String>(
                           value: 'Logout',
-                          child: Text('Log out'),
+                          child: Text('Log out',style:  TextStyle(
+                fontFamily: 'ABeeZee',
+                fontWeight: FontWeight.normal,
+                ),),
                         ),
                       ],
                   onSelected: (value) {
@@ -55,8 +62,9 @@ class _ProfilePageState extends State<ProfilePage> {
             title: const Text(
               'Profile',
               style: TextStyle(
+                fontFamily: 'ABeeZee',
                 fontWeight: FontWeight.bold,
-              ),
+                ),
             ),
           ),
           body: Container(
