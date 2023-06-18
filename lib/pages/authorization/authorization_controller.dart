@@ -49,6 +49,7 @@ class AuthorizationController {
       } else if (e.code == "invalid-email") {
         buildSnackBar(msg: e.message.toString(), context: context);
       }
+      buildSnackBar(msg: e.message.toString(), context: context);
     }
   }
 
