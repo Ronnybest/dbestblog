@@ -1,0 +1,3 @@
+class ViewPostStates {
+  const ViewPostStates();
+}

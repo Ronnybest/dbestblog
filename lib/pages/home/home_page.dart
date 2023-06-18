@@ -1,5 +1,6 @@
 import 'package:dbestblog/pages/home/bloc/home_states.dart';
 import 'package:dbestblog/pages/home/home_controller.dart';
+import 'package:dbestblog/pages/home/view_post/view_post_page.dart';
 import 'package:dbestblog/pages/home/widgets/home_page_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,12 +53,19 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 1, // Задаем количество столбцов
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  childAspectRatio:1.2, // Отношение ширины к высоте каждого элемента
+                  childAspectRatio:
+                      1.2, // Отношение ширины к высоте каждого элемента
                 ),
                 itemCount: state.posts.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ViewPostPage(
+                          postObj: state.posts[index],
+                        ),
+                      ));
+                    },
                     child: postGrid(item: state.posts[index], context: context),
                   );
                 },

@@ -13,4 +13,6 @@ class AppPageNames {
   static const String EDIT_PROFILE = '/edit_profile';
 
   static const String PROFILE = '/profile';
+
+  static const String VIEW_POST = 'view_post';
 }
