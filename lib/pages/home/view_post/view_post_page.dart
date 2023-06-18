@@ -2,8 +2,6 @@ import 'dart:ui';
 
 import 'package:dbestblog/common/models/post.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage_2/provider.dart';
-import 'package:flutter_advanced_networkimage_2/transition.dart';
 
 class ViewPostPage extends StatefulWidget {
   const ViewPostPage({super.key, required this.postObj});
