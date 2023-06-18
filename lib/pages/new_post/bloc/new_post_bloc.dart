@@ -10,5 +10,6 @@ class NewPostBloc extends Bloc<NewPostEvents, NewPostStates> {
     on<EmptyImage>(
       (event, emit) => emit(state.deleteImage(description: event.description)),
     );
+    on<Reset>((event, emit) => emit(state.reset()));
   }
 }

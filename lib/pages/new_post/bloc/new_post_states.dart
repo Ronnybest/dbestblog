@@ -3,7 +3,7 @@ import 'dart:io';
 class NewPostStates {
   const NewPostStates({this.image, this.description = ''});
   final File? image;
-  final String description;
+  final String? description;
 
   NewPostStates copyWith({File? image, String? description}) {
     return NewPostStates(
@@ -15,6 +15,13 @@ class NewPostStates {
     return NewPostStates(
       image: null,
       description: description ?? this.description,
+    );
+  }
+
+  NewPostStates reset() {
+    return const NewPostStates(
+      image: null,
+      description: null,
     );
   }
 }

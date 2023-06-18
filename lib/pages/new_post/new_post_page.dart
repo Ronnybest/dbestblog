@@ -21,63 +21,67 @@ class _NewPostPageState extends State<NewPostPage> {
     return Scaffold(
       appBar: _widgets.buildAppBar(titleText: 'New post'),
       body: BlocBuilder<NewPostBloc, NewPostStates>(
-        builder: (context, state) => SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                
-                margin: const EdgeInsets.all(15),
-                child: SingleChildScrollView(
-                  child: Container(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                    height: 360,
-                    child: TextField(
-                      style:  TextStyle(
-                fontFamily: 'ABeeZee',
-                fontWeight: FontWeight.normal,
-                ),
-                      onChanged: (value) => context
-                          .read<NewPostBloc>()
-                          .add(DescriptionNewPost(value)),
-                      expands: true,
-                      maxLines: null,
-                              decoration: InputDecoration(
-          border: InputBorder.none,
-        ),
+        builder: (context, state) => WillPopScope(
+          onWillPop: () async {
+            context.read<NewPostBloc>().add(Reset());
+            return true;
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(15),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      height: 360,
+                      child: TextField(
+                        style: TextStyle(
+                          fontFamily: 'ABeeZee',
+                          fontWeight: FontWeight.normal,
+                        ),
+                        onChanged: (value) => context
+                            .read<NewPostBloc>()
+                            .add(DescriptionNewPost(value)),
+                        expands: true,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                child: state.image != null
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 100,
-                            width: 100,
-                            child: Image(
-                              image: FileImage(state.image!),
+                Container(
+                  child: state.image != null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 100,
+                              width: 100,
+                              child: Image(
+                                image: FileImage(state.image!),
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () => context
-                                .read<NewPostBloc>()
-                                .add(EmptyImage(state.description)),
-                            child: Container(
-                              child: Icon(Icons.delete),
+                            GestureDetector(
+                              onTap: () => context
+                                  .read<NewPostBloc>()
+                                  .add(EmptyImage(state.description!)),
+                              child: Container(
+                                child: Icon(Icons.delete),
+                              ),
                             ),
-                          ),
-                        ],
-                      )
-                    : Container(),
-              ),
-            ],
+                          ],
+                        )
+                      : Container(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: Container(
         margin: EdgeInsets.only(left: 30, right: 30, bottom: 16),
@@ -91,10 +95,13 @@ class _NewPostPageState extends State<NewPostPage> {
                   minimumSize: Size(300, 55),
                   elevation: 0,
                 ),
-                child: Text('Upload',style:  TextStyle(
-                fontFamily: 'ABeeZee',
-                fontWeight: FontWeight.normal,
-                ),),
+                child: Text(
+                  'Upload',
+                  style: TextStyle(
+                    fontFamily: 'ABeeZee',
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
               ),
             ),
             SizedBox(width: 16),

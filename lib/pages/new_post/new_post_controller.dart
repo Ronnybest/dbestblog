@@ -43,6 +43,7 @@ class NewPostController {
       final _db = FirebaseFirestore.instance;
       await _db.collection('Posts').add(postObj.toMap());
       buildSnackBar(msg: 'Post has been added successfully', context: context);
+      context.read<NewPostBloc>().add(Reset());
       context.read<AppBlocs>().add(const TriggerAppEvent(0));
       // print(dr.id.toString());
       // print('Фото успешно загружено и ссылка сохранена в Firestore.');

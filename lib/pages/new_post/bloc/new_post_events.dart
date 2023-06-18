@@ -18,3 +18,5 @@ class EmptyImage extends NewPostEvents {
   const EmptyImage(this.description);
   final String description;
 }
+
+class Reset extends NewPostEvents {}
