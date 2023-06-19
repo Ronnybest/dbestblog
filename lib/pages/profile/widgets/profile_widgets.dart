@@ -18,7 +18,7 @@ Widget buildAvatar(BuildContext context, String img) {
   return CircleAvatar(
     minRadius: 10,
     maxRadius: 200,
-    foregroundImage: NetworkImage(img),
+    foregroundImage: NetworkImage(img, scale: 0.5),
     backgroundColor: Colors.transparent,
   );
 }

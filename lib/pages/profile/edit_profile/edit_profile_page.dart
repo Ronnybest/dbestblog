@@ -85,48 +85,45 @@ class _EditProfilePageState extends State<EditProfilePage> {
               children: [
                 Stack(
                   children: [
-                    CircleAvatar(
-                        maxRadius: 85,
-                        minRadius: 85,
-                        child: ClipOval(
-                          //clipBehavior: Clip.antiAlias,
-                          child: state.avatar == null
-                              ? TransitionToImage(
-                                  image: AdvancedNetworkImage(
-                                    _editProfilePage.userProfile!.avatarLink!,
-                                    timeoutDuration:
-                                        const Duration(seconds: 30),
-                                    retryLimit: 1,
-                                  ),
-                                  fit: BoxFit.cover,
-                                  placeholder: Container(
-                                    color: Colors.transparent,
-                                    child: const Icon(Icons.refresh),
-                                  ),
-                                  imageFilter: ImageFilter.blur(
-                                      sigmaX: 10.0, sigmaY: 10.0),
-                                  enableRefresh: true,
-                                  loadingWidgetBuilder: (
-                                    context,
-                                    progress,
-                                    imageData,
-                                  ) {
-                                    return Container(
-                                      alignment: Alignment.center,
-                                      child: CircularProgressIndicator(
-                                        value:
-                                            progress == 0.0 ? null : progress,
-                                      ),
-                                    );
-                                  },
-                                )
-                              : Image(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  image: FileImage(state.avatar!),
-                                  fit: BoxFit.fitWidth,
+                    ClipOval(
+                      child: CircleAvatar(
+                        radius: 100,
+                        child: state.avatar == null
+                            ? TransitionToImage(
+                                image: AdvancedNetworkImage(
+                                  _editProfilePage.userProfile!.avatarLink!,
+                                  timeoutDuration: const Duration(seconds: 30),
+                                  retryLimit: 1,
                                 ),
-                        )),
+                                fit: BoxFit.cover,
+                                placeholder: Container(
+                                  color: Colors.transparent,
+                                  child: const Icon(Icons.refresh),
+                                ),
+                                imageFilter: ImageFilter.blur(
+                                    sigmaX: 10.0, sigmaY: 10.0),
+                                enableRefresh: true,
+                                loadingWidgetBuilder: (
+                                  context,
+                                  progress,
+                                  imageData,
+                                ) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator(
+                                      value: progress == 0.0 ? null : progress,
+                                    ),
+                                  );
+                                },
+                              )
+                            : Image(
+                                width: double.infinity,
+                                height: double.infinity,
+                                image: FileImage(state.avatar!),
+                                fit: BoxFit.fitWidth,
+                              ),
+                      ),
+                    ),
                     Positioned(
                       bottom: 5,
                       right: 15,
