@@ -18,8 +18,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
     return BlocBuilder<AppBlocs, AppStates>(
       builder: (context, state) {
         return Container(
-          child: SafeArea(
-              child: Scaffold(
+          child: Scaffold(
             body: buildPage(state.index),
             bottomNavigationBar: Container(
               decoration: BoxDecoration(),
@@ -31,7 +30,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
                 destinations: bottovNavBarTabs,
               ),
             ),
-          )),
+          ),
         );
       },
     );
