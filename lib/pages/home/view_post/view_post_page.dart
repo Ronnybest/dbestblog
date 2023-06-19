@@ -14,50 +14,55 @@ class _ViewPostPageState extends State<ViewPostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        //systemOverlayStyle: SystemUiOverlayStyle.light,
-        bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1),
-            child: Container(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-              //* height defines the thickness of the line
-              height: .3,
-            )),
-        //backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Row(
-          children: [
-            CircleAvatar(
-              maxRadius: 20,
-              minRadius: 20,
-              foregroundImage: NetworkImage(widget.postObj.auhtor_avatar!),
-            ),
-            Text(
-              widget.postObj.author_name!,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontFamily: 'ABeeZee',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+      appBar:AppBar(
+  // systemOverlayStyle: SystemUiOverlayStyle.light,
+  bottom: PreferredSize(
+    preferredSize: const Size.fromHeight(1),
+    child: Container(
+      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+      //* height defines the thickness of the line
+      height: .3,
+    ),
+  ),
+  centerTitle: true,
+  title: Row(
+    children: [
+      Text(
+        widget.postObj.author_name!,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
+          fontFamily: 'ABeeZee',
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
         ),
       ),
+    ],
+  ),
+),
+
       body: SafeArea(
           child: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(10),
+          margin: EdgeInsets.all(20),
           child: Column(
             children: [
-              Image(
-                image: NetworkImage(widget.postObj.image_link!),
-              ),
-              Text(widget.postObj.description!),
-              TextField(),
+              ClipRRect(
+  borderRadius: BorderRadius.circular(20),
+  child: Image(
+    image: NetworkImage(widget.postObj.image_link!),
+  ),
+),
+Padding(
+  padding: const EdgeInsets.all(10.0),
+  child:   Text(
+    widget.postObj.description!,
+  ),
+)
             ],
           ),
         ),
-      )),
+      )
+      ),
     );
   }
 }
