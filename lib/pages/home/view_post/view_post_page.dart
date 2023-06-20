@@ -46,7 +46,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
               widget.postObj.author_name!,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
-                fontFamily: 'ABeeZee',
+                fontFamily: 'Nunito',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

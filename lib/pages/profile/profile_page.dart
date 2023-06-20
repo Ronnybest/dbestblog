@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         const PopupMenuItem<String>(
                           value: 'Edit profile',
                           child: Text('Edit profile',style:  TextStyle(
-                fontFamily: 'ABeeZee',
+                fontFamily: 'Nunito',
                 fontWeight: FontWeight.normal,
                 ),
                 ),
@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         const PopupMenuItem<String>(
                           value: 'Logout',
                           child: Text('Log out',style:  TextStyle(
-                fontFamily: 'ABeeZee',
+                fontFamily: 'Nunito',
                 fontWeight: FontWeight.normal,
                 ),),
                         ),
@@ -62,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
             title: const Text(
               'Profile',
               style: TextStyle(
-                fontFamily: 'ABeeZee',
+                fontFamily: 'Nunito',
                 fontWeight: FontWeight.bold,
                 ),
             ),
@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Container(
                           //color: Colors.greenAccent,
                           child: buildText(
-                              userObj.name!, 'ABeeZee', 20, FontWeight.normal),
+                              userObj.name!, 'Nunito', 20, FontWeight.normal),
                         ),
                         const SizedBox(
                           height: 9,
@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Container(
                           //color: Colors.blueAccent,
                           child: buildText(
-                              userObj.email!, 'ABeeZee', 12, FontWeight.normal),
+                              userObj.email!, 'Nunito', 12, FontWeight.normal),
                         ),
                         const SizedBox(
                           height: 16,
@@ -117,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: buildText(
-                                userObj.bio!, 'ABeeZee', 16, FontWeight.normal),
+                                userObj.bio!, 'Nunito', 16, FontWeight.normal),
                           ),
                         ),
                         const SizedBox(

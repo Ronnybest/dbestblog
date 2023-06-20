@@ -38,7 +38,7 @@ class _NewPostPageState extends State<NewPostPage> {
                       height: 360,
                       child: TextField(
                         style: TextStyle(
-                          fontFamily: 'ABeeZee',
+                          fontFamily: 'Nunito',
                           fontWeight: FontWeight.normal,
                         ),
                         onChanged: (value) => context
@@ -98,7 +98,7 @@ class _NewPostPageState extends State<NewPostPage> {
                 child: Text(
                   'Upload',
                   style: TextStyle(
-                    fontFamily: 'ABeeZee',
+                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.normal,
                   ),
                 ),

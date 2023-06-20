@@ -20,7 +20,7 @@ class RegistrationWidgets {
         titleText,
         style: TextStyle(
           color: Theme.of(context).colorScheme.onSurface,
-          fontFamily: 'ABeeZee',
+          fontFamily: 'Nunito',
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -37,7 +37,7 @@ class RegistrationWidgets {
         obscureText: type == "pass" ? true : false,
         onChanged: (value) => func(value),
         style: TextStyle(
-          fontFamily: 'ABeeZee',
+          fontFamily: 'Nunito',
           fontWeight: FontWeight.normal,
           ),
         decoration: InputDecoration(

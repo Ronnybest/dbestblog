@@ -27,7 +27,7 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
               SizedBox(width: 8),
               Text(item.author_name!, style: TextStyle(
               fontSize: 16,
-              fontFamily: 'ABeeZee',
+              fontFamily: 'Nunito',
               fontWeight: FontWeight.normal,
             ), ),
             ],
@@ -75,7 +75,7 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
             item.description!,
             style: TextStyle(
               fontSize: 14,
-              fontFamily: 'ABeeZee',
+              fontFamily: 'Nunito',
               fontWeight: FontWeight.normal,
             ),            maxLines: 2,
             overflow: TextOverflow.fade,

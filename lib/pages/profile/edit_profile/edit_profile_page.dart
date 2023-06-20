@@ -74,7 +74,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               'Edit profile',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
-                fontFamily: 'ABeeZee',
+                fontFamily: 'Nunito',
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -156,7 +156,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
-                    fontFamily: 'ABeeZee',
+                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -172,7 +172,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   //textAlign: TextAlign.left,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
-                    fontFamily: 'ABeeZee',
+                    fontFamily: 'Nunito',
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -189,7 +189,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Text(
               'Save',
               style: TextStyle(
-                fontFamily: 'ABeeZee',
+                fontFamily: 'Nunito',
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -217,7 +217,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return TextField(
       style: TextStyle(
         color: Theme.of(context).colorScheme.onSurface,
-        fontFamily: 'ABeeZee',
+        fontFamily: 'Nunito',
         fontWeight: FontWeight.normal,
       ),
       onChanged: func,

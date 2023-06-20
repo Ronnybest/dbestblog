@@ -85,6 +85,11 @@ flutter:
         - asset: assets/fonts/Kalam-Regular.ttf
         - asset: assets/fonts/Kalam-Bold.ttf
         - asset: assets/fonts/Kalam-Light.ttf
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito-Bold.ttf
+        - asset: assets/fonts/Nunito-Light.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
