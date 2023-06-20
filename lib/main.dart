@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'common/routes/pages.dart';
 import 'global.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       return MultiBlocProvider(
         providers: [...AppPagesComplect.allBlocsProvider(context)],
         child: MaterialApp(
+          builder: EasyLoading.init(),
           onGenerateRoute: AppPagesComplect.generateRoutes,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

@@ -10,6 +10,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../application/bloc/application_bloc.dart';
 
@@ -19,6 +20,11 @@ class NewPostController {
   NewPostController({required this.context});
 
   Future<void> uploadPost() async {
+    EasyLoading.show(
+      indicator: const CircularProgressIndicator(),
+      maskType: EasyLoadingMaskType.clear,
+      dismissOnTap: true,
+    );
     final UserObj = Global.storageServices.getUserProfile();
     PostObj postObj = PostObj();
     String downloadUrl = '';
@@ -42,12 +48,14 @@ class NewPostController {
       postObj.upload_time = Timestamp.now();
       final _db = FirebaseFirestore.instance;
       await _db.collection('Posts').add(postObj.toMap());
+      EasyLoading.dismiss();
       buildSnackBar(msg: 'Post has been added successfully', context: context);
       context.read<NewPostBloc>().add(Reset());
       context.read<AppBlocs>().add(const TriggerAppEvent(0));
       // print(dr.id.toString());
       // print('Фото успешно загружено и ссылка сохранена в Firestore.');
     } catch (error) {
+      EasyLoading.dismiss();
       print('Ошибка при загрузке фото: $error');
     }
   }

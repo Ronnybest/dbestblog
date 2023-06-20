@@ -9,6 +9,7 @@ import 'package:dbestblog/pages/profile/edit_profile/bloc/edit_profile_bloc.dart
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../common/values/constants.dart';
 
@@ -18,6 +19,11 @@ class EditProfileController {
   EditProfileController({required this.context});
 
   Future<void> changeInfo() async {
+    EasyLoading.show(
+      indicator: const CircularProgressIndicator(),
+      maskType: EasyLoadingMaskType.clear,
+      dismissOnTap: true,
+    );
     final state = context.read<EditProfileBloc>().state;
     final avatar = state.avatar;
     final nickname = state.nickname;
@@ -54,6 +60,7 @@ class EditProfileController {
     UserObj newData = UserObj.fromMap(await getDataById('Users', userId!));
     Global.storageServices
         .setStringToKey(AppConstants().USER_INFO, jsonEncode(newData.toMap()));
+    EasyLoading.dismiss();
     context.read<ProfileBloc>().add(UpdateProfile(newData));
   }
 
