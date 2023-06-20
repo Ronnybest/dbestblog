@@ -1,3 +1,4 @@
+import 'package:dbestblog/common/models/post.dart';
 import 'package:dbestblog/common/models/user.dart';
 
 abstract class ProfileEvents {
@@ -11,4 +12,9 @@ class UpdateProfile extends ProfileEvents {
 
 class ResetProfile extends ProfileEvents {
   const ResetProfile();
+}
+
+class GetUsersPosts extends ProfileEvents {
+  const GetUsersPosts(this.posts);
+  final List<PostObj> posts;
 }

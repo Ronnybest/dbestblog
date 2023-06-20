@@ -1,8 +1,8 @@
 class RegistrationStates {
-  final String name;
-  final String email;
-  final String password;
-  final String rePassword;
+  final String? name;
+  final String? email;
+  final String? password;
+  final String? rePassword;
 
   const RegistrationStates({
     this.name = "",
@@ -18,6 +18,15 @@ class RegistrationStates {
       email: email ?? this.email,
       password: password ?? this.password,
       rePassword: rePassword ?? this.rePassword,
+    );
+  }
+
+  RegistrationStates reset() {
+    return const RegistrationStates(
+      name: null,
+      email: null,
+      password: null,
+      rePassword: null,
     );
   }
 }

@@ -21,3 +21,7 @@ class RePasswordEvent extends RegistrationEvents {
   final String rePassword;
   RePasswordEvent({required this.rePassword});
 }
+
+class ResetRegistr extends RegistrationEvents {
+  const ResetRegistr();
+}

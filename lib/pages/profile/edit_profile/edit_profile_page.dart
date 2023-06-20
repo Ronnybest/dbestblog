@@ -1,13 +1,11 @@
 import 'dart:io';
-import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dbestblog/pages/profile/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:dbestblog/pages/profile/edit_profile/bloc/edit_profile_events.dart';
 import 'package:dbestblog/pages/profile/edit_profile/bloc/edit_profile_states.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage_2/provider.dart';
-import 'package:flutter_advanced_networkimage_2/transition.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../registration/widgets/registration_widgets.dart';
 import 'edit_profile_controller.dart';
@@ -53,8 +51,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       builder: (context, state) => WillPopScope(
         onWillPop: () async {
           context.read<EditProfileBloc>().add(const ResetBloc());
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil('/application', (route) => false);
+          Navigator.of(context).pop();
           return true;
         },
         child: Scaffold(
@@ -85,44 +82,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
               children: [
                 Stack(
                   children: [
-                    ClipOval(
-                      child: CircleAvatar(
-                        radius: 100,
-                        child: state.avatar == null
-                            ? TransitionToImage(
-                                image: AdvancedNetworkImage(
-                                  _editProfilePage.userProfile!.avatarLink!,
-                                  timeoutDuration: const Duration(seconds: 30),
-                                  retryLimit: 1,
-                                ),
-                                fit: BoxFit.cover,
-                                placeholder: Container(
-                                  color: Colors.transparent,
-                                  child: const Icon(Icons.refresh),
-                                ),
-                                imageFilter: ImageFilter.blur(
-                                    sigmaX: 10.0, sigmaY: 10.0),
-                                enableRefresh: true,
-                                loadingWidgetBuilder: (
-                                  context,
-                                  progress,
-                                  imageData,
-                                ) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    child: CircularProgressIndicator(
-                                      value: progress == 0.0 ? null : progress,
-                                    ),
-                                  );
-                                },
-                              )
-                            : Image(
-                                width: double.infinity,
-                                height: double.infinity,
-                                image: FileImage(state.avatar!),
-                                fit: BoxFit.fitWidth,
-                              ),
-                      ),
+                    CircleAvatar(
+                      radius: 100,
+                      foregroundImage: state.avatar != null &&
+                              File(state.avatar!.absolute.path).existsSync()
+                          ? FileImage(state.avatar!) as ImageProvider<Object>
+                          : CachedNetworkImageProvider(
+                              _editProfilePage.userProfile!.avatarLink!),
                     ),
                     Positioned(
                       bottom: 5,
@@ -201,7 +167,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 buildSnackBar(
                     context: context, msg: 'User data changed successfully!');
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                  '.../profile_page',
+                  '/profile_page',
                   (route) => false,
                 );
               });
@@ -232,12 +198,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<void> selectImage() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-      );
-      if (result != null && result.files.isNotEmpty) {
-        PlatformFile file = result.files.first;
-        File tempFile = File(file.path!);
+      final ImagePicker picker = ImagePicker();
+      final XFile? result =
+          await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+      if (result != null) {
+        File tempFile = File(result.path);
         context.read<EditProfileBloc>().add(ChangeAvatar(tempFile));
       } else {}
     } catch (error) {

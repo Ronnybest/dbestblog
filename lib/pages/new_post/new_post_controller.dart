@@ -6,12 +6,11 @@ import 'package:dbestblog/pages/application/bloc/application_events.dart';
 import 'package:dbestblog/pages/new_post/bloc/new_post_bloc.dart';
 import 'package:dbestblog/pages/new_post/bloc/new_post_events.dart';
 import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../application/bloc/application_bloc.dart';
 
 class NewPostController {
@@ -62,12 +61,11 @@ class NewPostController {
 
   Future<void> selectImage() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-      );
-      if (result != null && result.files.isNotEmpty) {
-        PlatformFile file = result.files.first;
-        File tempFile = File(file.path!);
+      final ImagePicker picker = ImagePicker();
+      final XFile? result =
+          await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+      if (result != null) {
+        File tempFile = File(result.path);
         context.read<NewPostBloc>().add(ImageNewPost(tempFile));
       } else {}
     } catch (error) {

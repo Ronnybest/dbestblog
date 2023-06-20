@@ -4,6 +4,10 @@ import 'package:dbestblog/common/models/post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage_2/provider.dart';
 import 'package:flutter_advanced_networkimage_2/transition.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../another_user_profile/bloc/another_user_profile_bloc.dart';
+import '../../another_user_profile/bloc/another_user_profile_events.dart';
 
 class ViewPostPage extends StatefulWidget {
   const ViewPostPage({super.key, required this.postObj});
@@ -28,13 +32,20 @@ class _ViewPostPageState extends State<ViewPostPage> {
         ),
         centerTitle: true,
         actions: [
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: CircleAvatar(
-              foregroundColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
-              foregroundImage:
-                  NetworkImage(widget.postObj.auhtor_avatar!, scale: 0.5),
+          GestureDetector(
+            onTap: () {
+              context.read<AnotherUserProfileBloc>().add(
+                  LoadProfileAndPosts(null, null, widget.postObj.author_id!));
+              Navigator.of(context).pushNamed('/another_user_profile');
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              child: CircleAvatar(
+                foregroundColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                foregroundImage:
+                    NetworkImage(widget.postObj.auhtor_avatar!, scale: 0.5),
+              ),
             ),
           ),
         ],

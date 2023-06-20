@@ -11,3 +11,7 @@ class PasswordEvent extends AuthorizationEvents {
   final String password;
   const PasswordEvent({required this.password});
 }
+
+class ResetAuthBloc extends AuthorizationEvents {
+  const ResetAuthBloc();
+}

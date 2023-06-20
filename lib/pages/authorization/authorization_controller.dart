@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbestblog/pages/authorization/bloc/authorization_bloc.dart';
+import 'package:dbestblog/pages/authorization/bloc/authorization_events.dart';
 import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +23,16 @@ class AuthorizationController {
       dismissOnTap: true,
     );
     final state = context.read<AuthorizationBloc>().state;
-    String email = state.email;
-    String password = state.password;
+    String email = state.email ?? '';
+    String password = state.password ?? '';
 
     if (email.isEmpty) {
+      EasyLoading.dismiss();
       buildSnackBar(msg: 'Please, enter email', context: context);
       return;
     }
     if (password.isEmpty) {
+      EasyLoading.dismiss();
       buildSnackBar(msg: 'Please, enter password', context: context);
       return;
     }
@@ -46,6 +49,7 @@ class AuthorizationController {
       Global.storageServices
           .setStringToKey(AppConstants().USER_INFO, jsonEncode(userData));
       EasyLoading.dismiss();
+      context.read<AuthorizationBloc>().add(const ResetAuthBloc());
       Navigator.of(context)
           .pushNamedAndRemoveUntil("/application", (route) => false);
     } on FirebaseAuthException catch (e) {

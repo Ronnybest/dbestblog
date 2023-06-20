@@ -1,9 +1,10 @@
+import 'package:dbestblog/common/models/post.dart';
 import 'package:dbestblog/common/routes/routes.dart';
 import 'package:dbestblog/pages/profile/bloc/profile_bloc.dart';
 import 'package:dbestblog/pages/profile/bloc/profile_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../common/values/constants.dart';
 import '../../../global.dart';
 
@@ -32,5 +33,15 @@ Widget buildText(
       fontSize: fontSize,
       fontWeight: fontWeight,
     ),
+  );
+}
+
+Widget buildPostCard(PostObj post) {
+  return CachedNetworkImage(
+    imageUrl: post.image_link!,
+    fit: BoxFit.cover,
+    progressIndicatorBuilder: (context, url, downloadProgress) =>
+        CircularProgressIndicator(value: downloadProgress.progress),
+    errorWidget: (context, url, error) => const Icon(Icons.error),
   );
 }

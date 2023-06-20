@@ -1,9 +1,12 @@
 import 'dart:ui';
 
 import 'package:dbestblog/common/models/post.dart';
+import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_bloc.dart';
+import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage_2/provider.dart';
 import 'package:flutter_advanced_networkimage_2/transition.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget postGrid({required PostObj item, required BuildContext context}) {
   return IntrinsicHeight(
@@ -12,25 +15,37 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
         borderRadius: BorderRadius.circular(20),
         color: Theme.of(context).colorScheme.secondaryContainer,
       ),
-      padding: EdgeInsets.fromLTRB(10, 10, 10, 0), // Добавление отступа 20px снизу
+      padding:
+          EdgeInsets.fromLTRB(10, 10, 10, 0), // Добавление отступа 20px снизу
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                minRadius: 20,
-                maxRadius: 20,
-                foregroundImage: NetworkImage(item.auhtor_avatar!),
-                backgroundColor: Colors.transparent,
-              ),
-              SizedBox(width: 8),
-              Text(item.author_name!, style: TextStyle(
-              fontSize: 16,
-              fontFamily: 'Nunito',
-              fontWeight: FontWeight.normal,
-            ), ),
-            ],
+          GestureDetector(
+            onTap: () {
+              context
+                  .read<AnotherUserProfileBloc>()
+                  .add(LoadProfileAndPosts(null, null, item.author_id!));
+              Navigator.of(context).pushNamed('/another_user_profile');
+            },
+            child: Row(
+              children: [
+                CircleAvatar(
+                  minRadius: 20,
+                  maxRadius: 20,
+                  foregroundImage: NetworkImage(item.auhtor_avatar!),
+                  backgroundColor: Colors.transparent,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  item.author_name!,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Nunito',
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 10),
           if (item.image_link != '')
@@ -77,7 +92,8 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
               fontSize: 14,
               fontFamily: 'Nunito',
               fontWeight: FontWeight.normal,
-            ),            maxLines: 2,
+            ),
+            maxLines: 2,
             overflow: TextOverflow.fade,
           ),
         ],
@@ -85,4 +101,3 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
     ),
   );
 }
-

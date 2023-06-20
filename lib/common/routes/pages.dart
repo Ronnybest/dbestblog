@@ -18,6 +18,9 @@ import 'package:dbestblog/pages/registration/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../pages/another_user_profile/another_user_profile.dart';
+import '../../pages/another_user_profile/bloc/another_user_profile_bloc.dart';
+
 class AppPagesComplect {
   static List<PageEntity> routes() {
     return [
@@ -55,6 +58,11 @@ class AppPagesComplect {
         route: AppPageNames.EDIT_PROFILE,
         page: const EditProfilePage(),
         bloc: BlocProvider(create: (_) => EditProfileBloc()),
+      ),
+      PageEntity(
+        route: AppPageNames.ANOTHER_USER_PROFILE,
+        page: const AnotherUserProfilePage(),
+        bloc: BlocProvider(create: (_) => AnotherUserProfileBloc()),
       ),
     ];
   }

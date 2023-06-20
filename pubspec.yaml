@@ -46,6 +46,9 @@ dependencies:
   json_annotation: ^4.8.1
   json_serializable: ^6.7.0
   shared_preferences: ^2.1.2
+  cached_network_image: ^3.2.3
+  flutter_image_compress: ^2.0.3
+  image_picker: ^0.8.9
 
 dev_dependencies:
   flutter_lints: ^2.0.0

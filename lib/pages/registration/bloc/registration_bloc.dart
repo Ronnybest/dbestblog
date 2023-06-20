@@ -12,5 +12,6 @@ class RegistrationBloc extends Bloc<RegistrationEvents, RegistrationStates> {
         (event, emit) => emit(state.copyWith(password: event.password)));
     on<RePasswordEvent>(
         (event, emit) => emit(state.copyWith(rePassword: event.rePassword)));
+    on<ResetRegistr>((event, emit) => emit(state.reset()));
   }
 }

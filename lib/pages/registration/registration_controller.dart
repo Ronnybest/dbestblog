@@ -7,6 +7,7 @@ import 'package:dbestblog/common/models/user.dart';
 import 'package:dbestblog/common/values/constants.dart';
 import 'package:dbestblog/global.dart';
 import 'package:dbestblog/pages/registration/bloc/registration_bloc.dart';
+import 'package:dbestblog/pages/registration/bloc/registration_events.dart';
 import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -25,15 +26,15 @@ class RegistrationController {
     String? password = state.password;
     String? repassword = state.rePassword;
 
-    if (username.isEmpty) {
+    if (username == null && username!.isEmpty) {
       buildSnackBar(msg: "Username cannot be empty", context: context);
       return;
     }
-    if (email.isEmpty) {
+    if (email == null && email!.isEmpty) {
       buildSnackBar(msg: "Email cannot be empty", context: context);
       return;
     }
-    if (password.isEmpty) {
+    if (password == null && password!.isEmpty) {
       buildSnackBar(msg: "Password cannot be empty", context: context);
       return;
     }
@@ -73,6 +74,7 @@ class RegistrationController {
             msg:
                 "Verify your account by link in message  which sent to your email",
             context: context);
+        context.read<RegistrationBloc>().add(const ResetRegistr());
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/application', (route) => false);
       }

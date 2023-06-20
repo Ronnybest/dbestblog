@@ -56,17 +56,18 @@ class _HomePageState extends State<HomePage> {
                   childAspectRatio:
                       1.2, // Отношение ширины к высоте каждого элемента
                 ),
-                itemCount: state.posts.length,
+                itemCount: state.posts!.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ViewPostPage(
-                          postObj: state.posts[index],
+                          postObj: state.posts![index],
                         ),
                       ));
                     },
-                    child: postGrid(item: state.posts[index], context: context),
+                    child:
+                        postGrid(item: state.posts![index], context: context),
                   );
                 },
               ),
