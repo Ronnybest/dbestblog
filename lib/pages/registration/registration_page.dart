@@ -5,6 +5,7 @@ import 'package:dbestblog/pages/registration/registration_controller.dart';
 import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -19,59 +20,54 @@ class _RegistrationPageState extends State<RegistrationPage> {
     RegistrationWidgets widgets = RegistrationWidgets(context: context);
     return BlocBuilder<RegistrationBloc, RegistrationStates>(
         builder: (context, state) {
-      return Container(
-        child: Scaffold(
-          appBar: widgets.buildAppBar(titleText: 'Registration'),
-          body: Container(
-            margin: const EdgeInsets.only(top: 50),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      return Scaffold(
+        appBar: widgets.buildAppBar(titleText: 'Registration'),
+        body: Container(
+          margin: EdgeInsets.only(top: 50.h),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Column(
               children: [
-                Container(
-            child: Column(children: [
-                            widgets.buildTextFields(
-                  hintText: 'Nickname',
-                  type: 'input',
-                  func: (value) => context
-                      .read<RegistrationBloc>()
-                      .add(UserNameEvent(username: value!))),
-              const SizedBox(
-                height: 20,
-              ),
-              widgets.buildTextFields(
-                  hintText: 'Email',
-                  type: 'input',
-                  func: (value) => context
-                      .read<RegistrationBloc>()
-                      .add(EmailEvent(email: value!))),
-              const SizedBox(
-                height: 20,
-              ),
-              widgets.buildTextFields(
-                  hintText: 'Password',
-                  type: 'pass',
-                  func: (value) => context
-                      .read<RegistrationBloc>()
-                      .add(PasswordEvent(password: value!))),
-              const SizedBox(
-                height: 20,
-              ),
-              widgets.buildTextFields(
-                  hintText: 'Confirm password',
-                  type: 'pass',
-                  func: (value) => context
-                      .read<RegistrationBloc>()
-                      .add(RePasswordEvent(rePassword: value!))),
-            ],)
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: widgets.buildButton(
+                widgets.buildTextFields(
+                    hintText: 'Nickname',
+                    type: 'input',
+                    func: (value) => context
+                        .read<RegistrationBloc>()
+                        .add(UserNameEvent(username: value!))),
+                SizedBox(
+                  height: 20.h,
+                ),
+                widgets.buildTextFields(
+                    hintText: 'Email',
+                    type: 'input',
+                    func: (value) => context
+                        .read<RegistrationBloc>()
+                        .add(EmailEvent(email: value!))),
+                SizedBox(
+                  height: 20.h,
+                ),
+                widgets.buildTextFields(
+                    hintText: 'Password',
+                    type: 'pass',
+                    func: (value) => context
+                        .read<RegistrationBloc>()
+                        .add(PasswordEvent(password: value!))),
+                SizedBox(
+                  height: 20.h,
+                ),
+                widgets.buildTextFields(
+                    hintText: 'Confirm password',
+                    type: 'pass',
+                    func: (value) => context
+                        .read<RegistrationBloc>()
+                        .add(RePasswordEvent(rePassword: value!))),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20.h, right: 20.w, left: 20.w),
+              child: widgets.buildButton(
                   text: 'Registration', type: 'confirm', func: register),
-          )
-            ]
-            ), 
-          ),
+            )
+          ]),
         ),
       );
     });
@@ -81,8 +77,3 @@ class _RegistrationPageState extends State<RegistrationPage> {
     RegistrationController(context).registerWithEmail();
   }
 }
-
-
-
-
-

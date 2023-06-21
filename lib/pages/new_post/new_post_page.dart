@@ -4,6 +4,7 @@ import 'package:dbestblog/pages/new_post/bloc/new_post_states.dart';
 import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'new_post_controller.dart';
 
 class NewPostPage extends StatefulWidget {
@@ -31,23 +32,35 @@ class _NewPostPageState extends State<NewPostPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: const EdgeInsets.all(15),
+                  margin: EdgeInsets.all(15.w),
                   child: SingleChildScrollView(
                     child: Container(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      height: 360,
-                      child: TextField(
-                        style: TextStyle(
-                          fontFamily: 'Nunito',
-                          fontWeight: FontWeight.normal,
-                        ),
-                        onChanged: (value) => context
-                            .read<NewPostBloc>()
-                            .add(DescriptionNewPost(value)),
-                        expands: true,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(20.w),
+                      ),
+                      height: 340.h,
+                      child: Container(
+                        margin: EdgeInsets.all(10.w),
+                        child: TextField(
+                          style: TextStyle(
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16.sp),
+                          onChanged: (value) => context
+                              .read<NewPostBloc>()
+                              .add(DescriptionNewPost(value)),
+                          expands: true,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: 'Input your post`s text here..',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.w300,
+                              fontSize: 16.sp,
+                            ),
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
@@ -58,11 +71,14 @@ class _NewPostPageState extends State<NewPostPage> {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              height: 100,
-                              width: 100,
+                            SizedBox(
+                              height: 200.h,
+                              width: 200.w,
                               child: Image(
-                                image: FileImage(state.image!),
+                                fit: BoxFit.contain,
+                                image: FileImage(
+                                  state.image!,
+                                ),
                               ),
                             ),
                             GestureDetector(
@@ -84,7 +100,7 @@ class _NewPostPageState extends State<NewPostPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 30, right: 30, bottom: 16),
+        margin: EdgeInsets.only(left: 30.w, right: 30.w, bottom: 16.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -92,7 +108,7 @@ class _NewPostPageState extends State<NewPostPage> {
               child: FilledButton(
                 onPressed: () => _newpostcontr.uploadPost(),
                 style: FilledButton.styleFrom(
-                  minimumSize: Size(300, 55),
+                  minimumSize: Size(300.w, 55.h),
                   elevation: 0,
                 ),
                 child: Text(
@@ -100,16 +116,17 @@ class _NewPostPageState extends State<NewPostPage> {
                   style: TextStyle(
                     fontFamily: 'Nunito',
                     fontWeight: FontWeight.normal,
+                    fontSize: 16.sp,
                   ),
                 ),
               ),
             ),
-            SizedBox(width: 16),
+            SizedBox(width: 16.w),
             FloatingActionButton(
               onPressed: () {
                 _newpostcontr.selectImage();
               },
-              child: Icon(Icons.photo),
+              child: const Icon(Icons.photo),
             ),
           ],
         ),

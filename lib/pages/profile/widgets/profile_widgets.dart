@@ -5,6 +5,7 @@ import 'package:dbestblog/pages/profile/bloc/profile_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../common/values/constants.dart';
 import '../../../global.dart';
 
@@ -17,9 +18,8 @@ void removeUserData(BuildContext context) {
 
 Widget buildAvatar(BuildContext context, String img) {
   return CircleAvatar(
-    minRadius: 10,
-    maxRadius: 200,
-    foregroundImage: NetworkImage(img, scale: 0.5),
+    radius: 90.r,
+    backgroundImage: CachedNetworkImageProvider(img, scale: 0.5),
     backgroundColor: Colors.transparent,
   );
 }

@@ -8,6 +8,7 @@ import 'package:dbestblog/pages/home/view_post/bloc/view_post_state.dart';
 import 'package:dbestblog/pages/home/view_post/view_post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import '../../another_user_profile/bloc/another_user_profile_bloc.dart';
 import '../../another_user_profile/bloc/another_user_profile_events.dart';
@@ -59,8 +60,9 @@ class _ViewPostPageState extends State<ViewPostPage> {
                 Navigator.of(context).pushNamed('/another_user_profile');
               },
               child: Container(
-                margin: EdgeInsets.only(right: 10),
+                margin: EdgeInsets.only(right: 10.w),
                 child: CircleAvatar(
+                  radius: 18.r,
                   foregroundColor: Colors.transparent,
                   backgroundColor: Colors.transparent,
                   foregroundImage:
@@ -78,7 +80,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontFamily: 'Nunito',
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -92,16 +94,17 @@ class _ViewPostPageState extends State<ViewPostPage> {
                 slivers: [
                   SliverToBoxAdapter(
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.w),
                         child: CachedNetworkImage(
                           imageUrl: _postObj.image_link!,
                           fit: BoxFit.cover,
                           progressIndicatorBuilder:
                               (context, url, downloadProgress) => SizedBox(
-                                  height: 250,
-                                  child: CircularProgressIndicator(
+                                  height: 250.h,
+                                  child: LinearProgressIndicator(
                                       value: downloadProgress.progress)),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
@@ -110,20 +113,38 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     ),
                   ),
                   SliverPadding(
-                    padding: EdgeInsets.only(top: 16),
+                    padding: EdgeInsets.only(top: 16.h),
                     sliver: SliverToBoxAdapter(
-                        child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              _postObj.description!,
-                              style: TextStyle(
-                                fontFamily: 'Nunito',
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ))),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: Text(
+                          _postObj.description!,
+                          style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   SliverPadding(
-                    padding: EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.only(top: 36.h),
+                    sliver: SliverToBoxAdapter(
+                      child: Center(
+                        child: Text(
+                          'Comments',
+                          style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.normal,
+                            fontSize: 18.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.only(top: 10.h),
                     sliver: state.users != null
                         ? SliverList(
                             delegate: SliverChildBuilderDelegate(
@@ -135,7 +156,14 @@ class _ViewPostPageState extends State<ViewPostPage> {
                         : SliverToBoxAdapter(
                             child: Container(
                               child: Center(
-                                child: Text('No comments, be first!'),
+                                child: Text(
+                                  'No comments, be first!',
+                                  style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 18.sp,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -145,12 +173,14 @@ class _ViewPostPageState extends State<ViewPostPage> {
               Container(
                 alignment: Alignment.bottomCenter,
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       color: Theme.of(context).colorScheme.background,
-                      width: 360,
+                      width: 330.w,
                       child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(10.0.w),
                         child: TextField(
                           controller: textEditingController,
                           onChanged: (value) => context
@@ -159,10 +189,11 @@ class _ViewPostPageState extends State<ViewPostPage> {
                           style: TextStyle(
                             fontFamily: 'Nunito',
                             fontWeight: FontWeight.normal,
+                            fontSize: 16.sp,
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(20.r),
                             ),
                             hintText: 'Leave comment...',
                           ),
@@ -170,7 +201,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0.w),
                       child: GestureDetector(
                         onTap: () async {
                           await _viewPostController
@@ -195,51 +226,68 @@ class _ViewPostPageState extends State<ViewPostPage> {
 
   Widget buildComment(CommentsObj comment, UserObj user) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        GestureDetector(
-          onTap: () {
-            context
-                .read<AnotherUserProfileBloc>()
-                .add(LoadProfileAndPosts(null, null, user.id!));
-            Navigator.of(context).pushNamed('/another_user_profile');
-          },
-          child: CircleAvatar(
-            foregroundImage: CachedNetworkImageProvider(user.avatarLink!),
+      margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              context
+                  .read<AnotherUserProfileBloc>()
+                  .add(LoadProfileAndPosts(null, null, user.id!));
+              Navigator.of(context).pushNamed('/another_user_profile');
+            },
+            child: CircleAvatar(
+              radius: 18.r,
+              foregroundImage: CachedNetworkImageProvider(user.avatarLink!),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    user.name!,
-                    style: TextStyle(
+          Padding(
+            padding: EdgeInsets.all(8.0.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 300.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        user.name!,
+                        style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.sp),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Text(
+                        style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14.sp),
+                        DateFormat('HH:mm').format(
+                          comment.upload_time!.toDate(),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Text(
+                  comment.message!,
+                  style: TextStyle(
                       fontFamily: 'Nunito',
                       fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                      DateFormat('HH:mm').format(comment.upload_time!.toDate()))
-                ],
-              ),
-              Text(
-                comment.message!,
-                style: TextStyle(
-                  fontFamily: 'Nunito',
-                  fontWeight: FontWeight.normal,
+                      fontSize: 16.sp),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }

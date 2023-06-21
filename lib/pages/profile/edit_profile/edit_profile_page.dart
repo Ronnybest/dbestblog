@@ -5,6 +5,7 @@ import 'package:dbestblog/pages/profile/edit_profile/bloc/edit_profile_events.da
 import 'package:dbestblog/pages/profile/edit_profile/bloc/edit_profile_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../registration/widgets/registration_widgets.dart';
@@ -73,17 +74,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 color: Theme.of(context).colorScheme.onSurface,
                 fontFamily: 'Nunito',
                 fontWeight: FontWeight.bold,
+                fontSize: 20.sp,
               ),
             ),
           ),
           body: Container(
-            margin: const EdgeInsets.all(10),
+            margin: EdgeInsets.all(10.w),
             child: Column(
               children: [
                 Stack(
                   children: [
                     CircleAvatar(
-                      radius: 100,
+                      radius: 90.r,
                       foregroundImage: state.avatar != null &&
                               File(state.avatar!.absolute.path).existsSync()
                           ? FileImage(state.avatar!) as ImageProvider<Object>
@@ -91,18 +93,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               _editProfilePage.userProfile!.avatarLink!),
                     ),
                     Positioned(
-                      bottom: 5,
-                      right: 15,
+                      bottom: 3.h,
+                      right: 8.w,
                       child: GestureDetector(
                         onTap: () => selectImage(),
                         child: Container(
                           decoration: BoxDecoration(
                             color:
                                 Theme.of(context).colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 8.h),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -116,7 +118,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 Text(
                   'Nickname',
                   textAlign: TextAlign.left,
@@ -124,6 +126,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     color: Theme.of(context).colorScheme.onSurface,
                     fontFamily: 'Nunito',
                     fontWeight: FontWeight.bold,
+                    fontSize: 16.sp,
                   ),
                 ),
                 buildTextField(
@@ -132,14 +135,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ChangeNickname(value),
                       ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 Text(
-                  'about me',
+                  'About me',
                   //textAlign: TextAlign.left,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
                     fontFamily: 'Nunito',
                     fontWeight: FontWeight.bold,
+                    fontSize: 16.sp,
                   ),
                 ),
                 buildTextField(
@@ -152,26 +156,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ),
           floatingActionButton: FilledButton(
-            child: Text(
-              'Save',
-              style: TextStyle(
-                fontFamily: 'Nunito',
-                fontWeight: FontWeight.normal,
-              ),
-            ),
             style: FilledButton.styleFrom(
-              minimumSize: Size(380, 40),
+              minimumSize: Size(350.w, 40.h),
             ),
             onPressed: () {
               _editProfilePage.changeInfo().then((value) {
                 buildSnackBar(
-                    context: context, msg: 'User data changed successfully!');
+                    context: context,
+                    msg: 'User data has changed successfully!');
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   '/profile_page',
                   (route) => false,
                 );
               });
             },
+            child: Text(
+              'Save',
+              style: TextStyle(
+                  fontFamily: 'Nunito',
+                  fontWeight: FontWeight.normal,
+                  fontSize: 16.sp),
+            ),
           ),
         ),
       ),

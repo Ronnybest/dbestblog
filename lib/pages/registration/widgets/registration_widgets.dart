@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegistrationWidgets {
   final BuildContext context;
@@ -19,10 +19,10 @@ class RegistrationWidgets {
       title: Text(
         titleText,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
-          fontFamily: 'Nunito',
-          fontWeight: FontWeight.bold,
-        ),
+            color: Theme.of(context).colorScheme.onSurface,
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.bold,
+            fontSize: 20.sp),
       ),
     );
   }
@@ -32,17 +32,17 @@ class RegistrationWidgets {
       required String type,
       required void Function(String? value) func}) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
       child: TextField(
         obscureText: type == "pass" ? true : false,
         onChanged: (value) => func(value),
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: 'Nunito',
           fontWeight: FontWeight.normal,
-          ),
+        ),
         decoration: InputDecoration(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(20.w),
           ),
           labelText: hintText,
         ),
@@ -55,9 +55,32 @@ class RegistrationWidgets {
       required String type,
       required void Function() func}) {
     return type == 'confirm'
-        ? FilledButton(onPressed: func, child: Text(text, style: TextStyle(fontFamily: 'ABeeZee', fontWeight: FontWeight.normal,),), style:  FilledButton.styleFrom(minimumSize: Size( 370, 40),)  //////// HERE
-, )
-        : OutlinedButton(onPressed: func, child: Text(text, style: TextStyle(fontFamily: 'ABeeZee', fontWeight: FontWeight.normal,),), style: OutlinedButton.styleFrom(minimumSize: Size( 370, 40)));
+        ? FilledButton(
+            onPressed: func,
+            style: FilledButton.styleFrom(
+              minimumSize: Size(370.w, 40.h),
+            ),
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontFamily: 'Nunito',
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          )
+        : OutlinedButton(
+            onPressed: func,
+            style: OutlinedButton.styleFrom(minimumSize: Size(370.w, 40.h)),
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontFamily: 'Nunito',
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          );
   }
 }
 

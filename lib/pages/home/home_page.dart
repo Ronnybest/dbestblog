@@ -5,6 +5,7 @@ import 'package:dbestblog/pages/home/view_post/bloc/view_post_events.dart';
 import 'package:dbestblog/pages/home/widgets/home_page_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'bloc/home_bloc.dart';
 
@@ -35,10 +36,10 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
+          title: Text(
             'DBestBlog',
             style: TextStyle(
-              fontSize: 32,
+              fontSize: 32.sp,
               fontFamily: 'Kalam',
               fontWeight: FontWeight.bold,
             ),
@@ -48,14 +49,14 @@ class _HomePageState extends State<HomePage> {
           builder: (context, state) => RefreshIndicator(
             onRefresh: _refreshPage,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
               child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1, // Задаем количество столбцов
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
                   childAspectRatio:
-                      1.2, // Отношение ширины к высоте каждого элемента
+                      1.1.h, // Отношение ширины к высоте каждого элемента
                 ),
                 itemCount: state.posts!.length,
                 itemBuilder: (context, index) {

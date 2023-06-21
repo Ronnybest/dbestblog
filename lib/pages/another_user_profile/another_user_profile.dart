@@ -4,6 +4,7 @@ import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_e
 import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../common/models/post.dart';
 import '../home/view_post/bloc/view_post_bloc.dart';
@@ -41,55 +42,52 @@ class _AnotherUserProfilePageState extends State<AnotherUserProfilePage> {
             backgroundColor: Theme.of(context).colorScheme.background,
             appBar: AppBar(
               centerTitle: true,
-              title: const Text(
+              title: Text(
                 'Profile',
                 style: TextStyle(
                   fontFamily: 'Nunito',
                   fontWeight: FontWeight.bold,
+                  fontSize: 20.sp,
                 ),
               ),
             ),
             body: state.postObj != null && state.userObj != null
                 ? Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(20.r),
                       color: Theme.of(context).colorScheme.secondaryContainer,
                     ),
-                    margin: const EdgeInsets.all(16),
+                    margin: EdgeInsets.all(16.w),
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(10.w),
                       child: CustomScrollView(
                         slivers: [
                           SliverToBoxAdapter(
-                            child: SizedBox(
-                              width: 180,
-                              height: 180,
-                              child: buildAvatar(
-                                  context, state.userObj!.avatarLink!),
-                            ),
+                            child: buildAvatar(
+                                context, state.userObj!.avatarLink!),
                           ),
-                          const SliverPadding(
-                            padding: EdgeInsets.only(top: 16),
+                          SliverPadding(
+                            padding: EdgeInsets.only(top: 10.h),
                           ),
                           SliverToBoxAdapter(
                             child: Center(
                               child: buildText(
                                 state.userObj!.name!,
                                 'Nunito',
-                                20,
-                                FontWeight.normal,
+                                20.sp,
+                                FontWeight.bold,
                               ),
                             ),
                           ),
-                          const SliverPadding(
-                            padding: EdgeInsets.only(top: 2),
+                          SliverPadding(
+                            padding: EdgeInsets.only(top: 2.h),
                           ),
                           SliverToBoxAdapter(
                             child: Center(
                               child: buildText(
                                 state.userObj!.email!,
                                 'Nunito',
-                                12,
+                                12.sp,
                                 FontWeight.normal,
                               ),
                             ),
@@ -99,13 +97,13 @@ class _AnotherUserProfilePageState extends State<AnotherUserProfilePage> {
                               child: buildText(
                                 state.userObj!.bio!,
                                 'Nunito',
-                                14,
+                                14.sp,
                                 FontWeight.normal,
                               ),
                             ),
                           ),
                           SliverPadding(
-                            padding: const EdgeInsets.only(top: 16),
+                            padding: EdgeInsets.only(top: 16.h),
                             sliver: SliverGrid(
                               delegate: SliverChildBuilderDelegate(
                                 childCount: state.postObj?.length ?? 0,
