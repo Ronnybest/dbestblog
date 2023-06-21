@@ -15,10 +15,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static final _defaultLightColorScheme =
-      ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple);
+      ColorScheme.fromSwatch(primarySwatch: Colors.grey);
 
   static final _defaultDarkColorScheme = ColorScheme.fromSwatch(
-      primarySwatch: Colors.deepPurple, brightness: Brightness.dark);
+      primarySwatch: Colors.grey, brightness: Brightness.dark);
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
