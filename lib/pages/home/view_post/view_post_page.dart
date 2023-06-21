@@ -114,13 +114,13 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     sliver: SliverToBoxAdapter(
                         child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(_postObj.description!, style: TextStyle(
+                            child: Text(
+                              _postObj.description!,
+                              style: TextStyle(
                                 fontFamily: 'Nunito',
-                                fontWeight: FontWeight.normal,                            
-                                ),
-                                )
-                                )
-                                ),
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ))),
                   ),
                   SliverPadding(
                     padding: EdgeInsets.only(top: 20),
@@ -135,7 +135,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                         : SliverToBoxAdapter(
                             child: Container(
                               child: Center(
-                                child: Text('No comments'),
+                                child: Text('No comments, be first!'),
                               ),
                             ),
                           ),
@@ -156,14 +156,14 @@ class _ViewPostPageState extends State<ViewPostPage> {
                           onChanged: (value) => context
                               .read<ViewPostBloc>()
                               .add(WriteMsg(msg: value)),
-                              style: TextStyle(
-                                fontFamily: 'Nunito',
-                                fontWeight: FontWeight.normal,                            
-                                ),
-                          decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.normal,
                           ),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             hintText: 'Leave comment...',
                           ),
                         ),
@@ -197,9 +197,17 @@ class _ViewPostPageState extends State<ViewPostPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        CircleAvatar(
-          
-            foregroundImage: CachedNetworkImageProvider(user.avatarLink!),),
+        GestureDetector(
+          onTap: () {
+            context
+                .read<AnotherUserProfileBloc>()
+                .add(LoadProfileAndPosts(null, null, user.id!));
+            Navigator.of(context).pushNamed('/another_user_profile');
+          },
+          child: CircleAvatar(
+            foregroundImage: CachedNetworkImageProvider(user.avatarLink!),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -207,22 +215,27 @@ class _ViewPostPageState extends State<ViewPostPage> {
             children: [
               Row(
                 children: [
-                  Text(user.name!,style: TextStyle(
-                                  fontFamily: 'Nunito',
-                                  fontWeight: FontWeight.normal,                            
-                                  ),
-                                  ),
+                  Text(
+                    user.name!,
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
                   SizedBox(
                     width: 10,
                   ),
-                  Text(DateFormat('HH:mm').format(comment.upload_time!.toDate()))
+                  Text(
+                      DateFormat('HH:mm').format(comment.upload_time!.toDate()))
                 ],
               ),
-              Text(comment.message!, style: TextStyle(
-                                  fontFamily: 'Nunito',
-                                  fontWeight: FontWeight.normal,                            
-                                  ),
-                                  ),
+              Text(
+                comment.message!,
+                style: TextStyle(
+                  fontFamily: 'Nunito',
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
             ],
           ),
         ),

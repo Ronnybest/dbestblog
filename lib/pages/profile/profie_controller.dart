@@ -11,9 +11,9 @@ import '../../common/models/post.dart';
 class ProfileController {
   ProfileController({required this.context});
   final BuildContext context;
-
+  late UserObj userObj;
   UserObj init() {
-    UserObj userObj = UserObj();
+    userObj = UserObj();
     final state = context.read<ProfileBloc>().state;
     if (state.userObj != null) {
       userObj.id = state.userObj!.id;
@@ -40,7 +40,9 @@ class ProfileController {
       postObj.author_id = post['author_id'];
       postObj.image_link = post['image_link'];
       postObj.description = post['description'];
-      postObj.author_name = post['author_name'];
+      postObj.author_name = userObj.name;
+      postObj.auhtor_avatar = userObj.avatarLink;
+      postObj.post_id = post['post_id'];
       posts.add(postObj);
     }
     context.read<ProfileBloc>().add(GetUsersPosts(posts));

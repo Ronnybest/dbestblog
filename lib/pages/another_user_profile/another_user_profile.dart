@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/models/post.dart';
+import '../home/view_post/bloc/view_post_bloc.dart';
+import '../home/view_post/bloc/view_post_events.dart';
 import '../profile/widgets/profile_widgets.dart';
 
 class AnotherUserProfilePage extends StatefulWidget {
@@ -109,7 +111,13 @@ class _AnotherUserProfilePageState extends State<AnotherUserProfilePage> {
                                 childCount: state.postObj?.length ?? 0,
                                 (context, index) {
                                   return GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.read<ViewPostBloc>().add(
+                                          LoadComments(
+                                              postObj: state.postObj?[index]));
+                                      Navigator.of(context)
+                                          .pushNamed('/view_post');
+                                    },
                                     child: buildPostCard(
                                         state.postObj?[index] ?? PostObj()),
                                   );

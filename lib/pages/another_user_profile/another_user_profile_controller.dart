@@ -16,6 +16,7 @@ class AnotherUserProfileController {
   init() async {
     _userId = context.read<AnotherUserProfileBloc>().state.userId!;
     _userObj = UserObj.fromMap(await getUserData()!);
+    _userObj.id = _userId;
     _posts = await getUserPosts();
     context
         .read<AnotherUserProfileBloc>()
@@ -47,7 +48,9 @@ class AnotherUserProfileController {
       postObj.author_id = post['author_id'];
       postObj.image_link = post['image_link'];
       postObj.description = post['description'];
-      postObj.author_name = post['author_name'];
+      postObj.author_name = _userObj.name;
+      postObj.post_id = post['post_id'];
+      postObj.auhtor_avatar = _userObj.avatarLink;
       posts.add(postObj);
     }
     return posts;

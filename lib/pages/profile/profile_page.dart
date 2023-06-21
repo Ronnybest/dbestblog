@@ -7,6 +7,9 @@ import 'package:dbestblog/pages/profile/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../home/view_post/bloc/view_post_bloc.dart';
+import '../home/view_post/bloc/view_post_events.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -137,7 +140,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         childCount: state.postObj?.length ?? 0,
                         (context, index) {
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              context.read<ViewPostBloc>().add(
+                                  LoadComments(postObj: state.postObj?[index]));
+                              Navigator.of(context).pushNamed('/view_post');
+                            },
                             child: buildPostCard(
                                 state.postObj?[index] ?? PostObj()),
                           );
