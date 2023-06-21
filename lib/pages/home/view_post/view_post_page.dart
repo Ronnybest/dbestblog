@@ -145,7 +145,8 @@ class _ViewPostPageState extends State<ViewPostPage> {
                   ),
                   SliverPadding(
                     padding: EdgeInsets.only(top: 10.h),
-                    sliver: state.users != null
+                    sliver: state.commentsObj != null &&
+                            state.commentsObj!.isNotEmpty
                         ? SliverList(
                             delegate: SliverChildBuilderDelegate(
                                 (context, index) => buildComment(
