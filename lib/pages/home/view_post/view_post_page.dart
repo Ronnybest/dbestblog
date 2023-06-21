@@ -114,7 +114,13 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     sliver: SliverToBoxAdapter(
                         child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(_postObj.description!))),
+                            child: Text(_postObj.description!, style: TextStyle(
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.normal,                            
+                                ),
+                                )
+                                )
+                                ),
                   ),
                   SliverPadding(
                     padding: EdgeInsets.only(top: 20),
@@ -142,25 +148,38 @@ class _ViewPostPageState extends State<ViewPostPage> {
                   children: [
                     Container(
                       color: Theme.of(context).colorScheme.background,
-                      width: 380,
-                      child: TextField(
-                        controller: textEditingController,
-                        onChanged: (value) => context
-                            .read<ViewPostBloc>()
-                            .add(WriteMsg(msg: value)),
-                        decoration: InputDecoration(
-                          hintText: 'Leave comment...',
+                      width: 360,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          controller: textEditingController,
+                          onChanged: (value) => context
+                              .read<ViewPostBloc>()
+                              .add(WriteMsg(msg: value)),
+                              style: TextStyle(
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.normal,                            
+                                ),
+                          decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          ),
+                            hintText: 'Leave comment...',
+                          ),
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        await _viewPostController
-                            .postComment(_postObj.post_id!);
-                        textEditingController.clear();
-                        _viewPostController.init(_postObj.post_id!);
-                      },
-                      child: Container(child: Icon(Icons.send)),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          await _viewPostController
+                              .postComment(_postObj.post_id!);
+                          textEditingController.clear();
+                          _viewPostController.init(_postObj.post_id!);
+                        },
+                        child: Container(child: Icon(Icons.send)),
+                      ),
                     )
                   ],
                 ),
@@ -179,21 +198,33 @@ class _ViewPostPageState extends State<ViewPostPage> {
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
         CircleAvatar(
-            foregroundImage: CachedNetworkImageProvider(user.avatarLink!)),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(user.name!),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(DateFormat('HH:mm').format(comment.upload_time!.toDate()))
-              ],
-            ),
-            Text(comment.message!),
-          ],
+          
+            foregroundImage: CachedNetworkImageProvider(user.avatarLink!),),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(user.name!,style: TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.normal,                            
+                                  ),
+                                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(DateFormat('HH:mm').format(comment.upload_time!.toDate()))
+                ],
+              ),
+              Text(comment.message!, style: TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.normal,                            
+                                  ),
+                                  ),
+            ],
+          ),
         ),
       ]),
     );
