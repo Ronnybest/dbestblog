@@ -38,7 +38,8 @@ class HomeController {
       postObj.image_link = post['image_link'];
       postObj.description = post['description'];
       postObj.author_name = post['author_name'];
-      print(postObj.author_name);
+      postObj.post_id = post['post_id'];
+      //print(postObj.post_id);
       posts.add(postObj);
     }
     EasyLoading.dismiss();

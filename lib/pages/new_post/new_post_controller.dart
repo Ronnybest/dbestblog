@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbestblog/common/models/post.dart';
@@ -46,7 +48,9 @@ class NewPostController {
       postObj.author_id = UserObj!.id;
       postObj.upload_time = Timestamp.now();
       final _db = FirebaseFirestore.instance;
-      await _db.collection('Posts').add(postObj.toMap());
+      DocumentReference _dr =
+          await _db.collection('Posts').add(postObj.toMap());
+      await _db.collection('Posts').doc(_dr.id).update({'post_id': _dr.id});
       EasyLoading.dismiss();
       buildSnackBar(msg: 'Post has been added successfully', context: context);
       context.read<NewPostBloc>().add(Reset());

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostObj {
+  late String? post_id;
   late String? author_id;
   late String? author_name;
   late String? image_link;
@@ -9,6 +10,7 @@ class PostObj {
   late Timestamp? upload_time;
 
   PostObj({
+    this.post_id,
     this.author_id,
     this.image_link,
     this.description,
@@ -18,6 +20,7 @@ class PostObj {
   });
 
   PostObj.fromMap(Map<String, dynamic> map) {
+    this.post_id = map['post_id'];
     this.author_id = map['author_id'];
     this.image_link = map['image_link'];
     this.description = map['description'];
@@ -28,6 +31,7 @@ class PostObj {
 
   Map<String, dynamic> toMap() {
     return {
+      'post_id': this.post_id,
       'author_id': this.author_id,
       'image_link': this.image_link,
       'description': this.description,

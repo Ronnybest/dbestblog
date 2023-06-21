@@ -7,6 +7,8 @@ import 'package:dbestblog/pages/authorization/authorization_page.dart';
 import 'package:dbestblog/pages/authorization/bloc/authorization_bloc.dart';
 import 'package:dbestblog/pages/home/bloc/home_bloc.dart';
 import 'package:dbestblog/pages/home/home_page.dart';
+import 'package:dbestblog/pages/home/view_post/bloc/view_post_bloc.dart';
+import 'package:dbestblog/pages/home/view_post/view_post_page.dart';
 import 'package:dbestblog/pages/new_post/bloc/new_post_bloc.dart';
 import 'package:dbestblog/pages/new_post/new_post_page.dart';
 import 'package:dbestblog/pages/profile/bloc/profile_bloc.dart';
@@ -63,6 +65,11 @@ class AppPagesComplect {
         route: AppPageNames.ANOTHER_USER_PROFILE,
         page: const AnotherUserProfilePage(),
         bloc: BlocProvider(create: (_) => AnotherUserProfileBloc()),
+      ),
+      PageEntity(
+        route: AppPageNames.VIEW_POST,
+        page: const ViewPostPage(),
+        bloc: BlocProvider(create: (_) => ViewPostBloc()),
       ),
     ];
   }

@@ -1,6 +1,7 @@
 import 'package:dbestblog/pages/home/bloc/home_states.dart';
 import 'package:dbestblog/pages/home/home_controller.dart';
-import 'package:dbestblog/pages/home/view_post/view_post_page.dart';
+import 'package:dbestblog/pages/home/view_post/bloc/view_post_bloc.dart';
+import 'package:dbestblog/pages/home/view_post/bloc/view_post_events.dart';
 import 'package:dbestblog/pages/home/widgets/home_page_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,11 +61,10 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ViewPostPage(
-                          postObj: state.posts![index],
-                        ),
-                      ));
+                      context
+                          .read<ViewPostBloc>()
+                          .add(LoadComments(postObj: state.posts![index]));
+                      Navigator.of(context).pushNamed('/view_post');
                     },
                     child:
                         postGrid(item: state.posts![index], context: context),
