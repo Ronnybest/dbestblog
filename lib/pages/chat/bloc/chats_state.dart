@@ -1,12 +1,19 @@
-part of 'chats_bloc.dart';
+import '../../../common/models/chats.dart';
 
-class ChatsStates {
-  final List<ChatsObj>? chats;
-  const ChatsStates({this.chats});
+abstract class ChatsState {}
 
-  ChatsStates copyWith({List<ChatsObj>? chats}) {
-    return ChatsStates(
-      chats: chats ?? this.chats,
-    );
-  }
+class ChatsInitialState extends ChatsState {}
+
+class ChatsLoadingState extends ChatsState {}
+
+class ChatsLoadedState extends ChatsState {
+  final List<ChatsObj> chats;
+
+  ChatsLoadedState({required this.chats});
+}
+
+class ChatsErrorState extends ChatsState {
+  final String error;
+
+  ChatsErrorState({required this.error});
 }

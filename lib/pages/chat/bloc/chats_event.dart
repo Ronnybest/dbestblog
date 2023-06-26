@@ -1,10 +1,3 @@
-part of 'chats_bloc.dart';
+abstract class ChatsEvent {}
 
-abstract class ChatsEvent {
-  const ChatsEvent();
-}
-
-class LoadChats extends ChatsEvent {
-  final List<ChatsObj>? chats;
-  const LoadChats({this.chats});
-}
+class LoadChatsEvent extends ChatsEvent {}
