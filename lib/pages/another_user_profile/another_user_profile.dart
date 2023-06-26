@@ -19,12 +19,13 @@ class AnotherUserProfilePage extends StatefulWidget {
 }
 
 class _AnotherUserProfilePageState extends State<AnotherUserProfilePage> {
-  // late AnotherUserProfileController _controller;
+  late final AnotherUserProfileController _controller;
 
   @override
   void initState() {
     super.initState();
-    AnotherUserProfileController(context: context).init();
+    _controller = AnotherUserProfileController(context: context);
+    _controller.init();
   }
 
   @override
@@ -91,6 +92,18 @@ class _AnotherUserProfilePageState extends State<AnotherUserProfilePage> {
                                 FontWeight.normal,
                               ),
                             ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Center(
+                                child: Container(
+                              child: IconButton(
+                                icon: Icon(Icons.mail),
+                                onPressed: () async {
+                                  await _controller.createNewChat();
+                                  print('new chat has been created');
+                                },
+                              ),
+                            )),
                           ),
                           SliverToBoxAdapter(
                             child: Center(

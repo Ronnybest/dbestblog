@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dbestblog/common/models/chats.dart';
 import 'package:dbestblog/common/models/post.dart';
 import 'package:dbestblog/common/models/user.dart';
+import 'package:dbestblog/global.dart';
 import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_bloc.dart';
 import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_events.dart';
 import 'package:flutter/material.dart';
@@ -54,5 +56,34 @@ class AnotherUserProfileController {
       posts.add(postObj);
     }
     return posts;
+  }
+
+  Future<void> createNewChat() async {
+    UserObj toUser = context.read<AnotherUserProfileBloc>().state.userObj!;
+    UserObj fromUser = Global.storageServices.getUserProfile()!;
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Chats')
+        .where('from_user_id', isEqualTo: fromUser.id)
+        .where('to_user_id', isEqualTo: toUser.id)
+        .limit(1)
+        .get();
+    if (snapshot.docs.isNotEmpty) {
+      print('chat exists');
+      return;
+    } else {
+      ChatsObj chatsObj = ChatsObj(
+        from_user_id: fromUser.id,
+        to_user_id: toUser.id,
+        last_msg: '',
+        last_msg_time: Timestamp.now(),
+        last_msg_user_id: '',
+        chat_id: '',
+      );
+      final _db = FirebaseFirestore.instance;
+      DocumentReference dr =
+          await _db.collection('Chats').add(chatsObj.toMap());
+      chatsObj.chat_id = dr.id;
+      await _db.collection('Chats').doc(dr.id).update({'chat_id': dr.id});
+    }
   }
 }

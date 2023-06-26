@@ -5,6 +5,8 @@ import 'package:dbestblog/pages/application/application.dart';
 import 'package:dbestblog/pages/application/bloc/application_bloc.dart';
 import 'package:dbestblog/pages/authorization/authorization_page.dart';
 import 'package:dbestblog/pages/authorization/bloc/authorization_bloc.dart';
+import 'package:dbestblog/pages/chat/bloc/chats_bloc.dart';
+import 'package:dbestblog/pages/chat/chats_page.dart';
 import 'package:dbestblog/pages/home/bloc/home_bloc.dart';
 import 'package:dbestblog/pages/home/home_page.dart';
 import 'package:dbestblog/pages/home/view_post/bloc/view_post_bloc.dart';
@@ -70,6 +72,11 @@ class AppPagesComplect {
         route: AppPageNames.VIEW_POST,
         page: const ViewPostPage(),
         bloc: BlocProvider(create: (_) => ViewPostBloc()),
+      ),
+      PageEntity(
+        route: AppPageNames.ALL_CHATS,
+        page: const AllChatsPage(),
+        bloc: BlocProvider(create: (_) => ChatsBloc()),
       ),
     ];
   }

@@ -1,4 +1,4 @@
-import 'package:dbestblog/pages/chat/chat_page.dart';
+import 'package:dbestblog/pages/chat/chats_page.dart';
 import 'package:dbestblog/pages/home/home_page.dart';
 import 'package:dbestblog/pages/new_post/new_post_page.dart';
 import 'package:dbestblog/pages/profile/profile_page.dart';
@@ -30,7 +30,7 @@ Widget buildPage(int index) {
   List<Widget> _widgets = [
     const HomePage(),
     const NewPostPage(),
-    const ChatPage(),
+    const AllChatsPage(),
     const ProfilePage(),
   ];
 
