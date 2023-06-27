@@ -1,3 +1,10 @@
-abstract class ChatsEvent {}
+import 'package:dbestblog/common/models/user.dart';
 
-class LoadChatsEvent extends ChatsEvent {}
+abstract class ChatsEvent {
+  const ChatsEvent();
+}
+
+class LoadUsersInChats extends ChatsEvent {
+  final List<UserObj>? users;
+  const LoadUsersInChats({this.users});
+}

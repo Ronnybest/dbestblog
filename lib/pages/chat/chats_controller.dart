@@ -4,9 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbestblog/common/models/chats.dart';
 import 'package:dbestblog/common/models/user.dart';
 import 'package:dbestblog/global.dart';
-import 'package:dbestblog/pages/chat/bloc/chats_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 StreamController<List<ChatsObj>> _chatsController =
     StreamController<List<ChatsObj>>.broadcast();

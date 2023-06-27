@@ -1,12 +1,15 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbestblog/common/models/chats.dart';
 import 'package:dbestblog/pages/chat/bloc/chats_bloc.dart';
+import 'package:dbestblog/pages/chat/bloc/chats_event.dart';
 import 'package:dbestblog/pages/chat/bloc/chats_state.dart';
-import 'package:dbestblog/pages/chat/chats_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../common/models/user.dart';
 import '../../global.dart';
@@ -24,11 +27,9 @@ class _AllChatsPageState extends State<AllChatsPage> {
 
   Stream<List<ChatsObj>> get chatsStream => _chatsController.stream;
 
-  late ChatsController _chatsControllerNS;
   @override
   void initState() {
     super.initState();
-    _chatsControllerNS = ChatsController(context: context);
     // _chatsController.init();
     fetchChats();
   }
@@ -39,7 +40,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
     super.dispose();
   }
 
-  void fetchChats() {
+  Future<void> fetchChats() async {
     UserObj currentUser = Global.storageServices.getUserProfile()!;
     FirebaseFirestore.instance
         .collection('Chats')
@@ -50,7 +51,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
           .collection('Chats')
           .where('from_user_id', isEqualTo: currentUser.id)
           .snapshots()
-          .listen((snapshot2) {
+          .listen((snapshot2) async {
         List<QueryDocumentSnapshot<Object?>> documents1 = snapshot1.docs;
         List<QueryDocumentSnapshot<Object?>> documents2 = snapshot2.docs;
 
@@ -65,10 +66,35 @@ class _AllChatsPageState extends State<AllChatsPage> {
           ChatsObj chatsObj = ChatsObj.fromMap(chat);
           allChats.add(chatsObj);
         }
-
         _chatsController.sink.add(allChats);
+        List<UserObj> allChatUsers = [];
+        for (final chat in allChats) {
+          UserObj _userObj;
+          if (chat.from_user_id != currentUser.id) {
+            _userObj = UserObj.fromMap(await getUserData(chat.from_user_id)!);
+            allChatUsers.add(_userObj);
+          }
+          if (chat.to_user_id != currentUser.id) {
+            _userObj = UserObj.fromMap(await getUserData(chat.to_user_id)!);
+            allChatUsers.add(_userObj);
+          }
+        }
+        if (context.mounted) {
+          context.read<ChatsBloc>().add(LoadUsersInChats(users: allChatUsers));
+        }
       });
     });
+  }
+
+  Future<Map<String, dynamic>>? getUserData(String? _userId) async {
+    final collectionRef = FirebaseFirestore.instance.collection('Users');
+    final querrySnapshot =
+        await collectionRef.where('id', isEqualTo: _userId).get();
+    if (querrySnapshot.docs.isNotEmpty) {
+      return querrySnapshot.docs.first.data();
+    } else {
+      return {};
+    }
   }
 
   @override
@@ -79,25 +105,38 @@ class _AllChatsPageState extends State<AllChatsPage> {
           if (snapshot.hasData) {
             print('snapshot has data');
             List<ChatsObj> chats = snapshot.data!;
-            return Scaffold(
-              body: SafeArea(
-                child: CustomScrollView(
-                  slivers: [
-                    SliverList.builder(
-                      itemCount: chats.length,
-                      itemBuilder: (context, index) => GestureDetector(
-                        onTap: () => print(chats.length),
-                        child: Container(
-                          margin: EdgeInsets.only(top: 10),
-                          child: buildChatItem(
-                            chats[index],
-                          ),
+            return BlocBuilder<ChatsBloc, ChatsState>(
+              builder: (context, state) {
+                return Scaffold(
+                  body: SafeArea(
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverList.builder(
+                          itemCount: chats.length,
+                          itemBuilder: (context, index) {
+                            if (state.chatUsers != null &&
+                                index < state.chatUsers!.length) {
+                              return GestureDetector(
+                                onTap: () => print(chats.length),
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  child: buildChatItem(
+                                    chats[index],
+                                    state.chatUsers![index],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              // Ожидание загрузки данных chatUsers
+                              return LinearProgressIndicator();
+                            }
+                          },
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             );
           } else {
             // Ожидание загрузки данных
@@ -106,15 +145,64 @@ class _AllChatsPageState extends State<AllChatsPage> {
         });
   }
 
-  Widget buildChatItem(ChatsObj? chat) {
-    return chat != null
+  Widget buildChatItem(ChatsObj? chat, UserObj? user) {
+    return chat != null && user != null
         ? Container(
-            height: 200,
-            color: Colors.red,
-            child: Text(chat.last_msg ?? ''),
+            margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 18.r,
+                  foregroundImage: CachedNetworkImageProvider(user.avatarLink!),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 300.w,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              user.name ?? 'no name',
+                              style: TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17.sp),
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              style: TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 14.sp),
+                              DateFormat('dd.MM.yyyy\nHH:mm').format(
+                                chat.last_msg_time!.toDate(),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Text(
+                        chat.last_msg ?? "no last msg",
+                        style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16.sp),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           )
-        : Container(
-            color: Colors.blue,
-          );
+        : LinearProgressIndicator();
   }
 }
