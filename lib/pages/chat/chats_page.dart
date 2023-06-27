@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
+
 
 import '../../common/models/user.dart';
 import '../../global.dart';
@@ -99,6 +101,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _widgets = RegistrationWidgets(context: context);
     return StreamBuilder<List<ChatsObj>>(
         stream: chatsStream,
         builder: (context, snapshot) {
@@ -107,7 +110,8 @@ class _AllChatsPageState extends State<AllChatsPage> {
             List<ChatsObj> chats = snapshot.data!;
             return BlocBuilder<ChatsBloc, ChatsState>(
               builder: (context, state) {
-                return Scaffold(
+              return Scaffold(
+                  appBar: _widgets.buildAppBar(titleText: 'Chats'),
                   body: SafeArea(
                     child: CustomScrollView(
                       slivers: [
@@ -119,7 +123,6 @@ class _AllChatsPageState extends State<AllChatsPage> {
                               return GestureDetector(
                                 onTap: () => print(chats.length),
                                 child: Container(
-                                  margin: EdgeInsets.only(top: 10),
                                   child: buildChatItem(
                                     chats[index],
                                     state.chatUsers![index],
@@ -148,55 +151,72 @@ class _AllChatsPageState extends State<AllChatsPage> {
   Widget buildChatItem(ChatsObj? chat, UserObj? user) {
     return chat != null && user != null
         ? Container(
+          decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.w),
+        color: Theme.of(context).colorScheme.secondaryContainer,
+      ),
             margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 18.r,
-                  foregroundImage: CachedNetworkImageProvider(user.avatarLink!),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    radius: 30.r,
+                    foregroundImage: CachedNetworkImageProvider(user.avatarLink!),                
+                  ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.0.w),
+                  padding: EdgeInsets.all(9.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 300.w,
+                        width: 260.w,
+                        height: 40.h,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            
                             Text(
                               user.name ?? 'no name',
                               style: TextStyle(
                                   fontFamily: 'Nunito',
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17.sp),
-                            ),
-                            SizedBox(
-                              width: 10.w,
+                            ),                       
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 260.w,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              chat.last_msg ?? "no last msg",
+                              style: TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 16.sp),
                             ),
                             Text(
                               style: TextStyle(
                                   fontFamily: 'Nunito',
-                                  fontWeight: FontWeight.w300,
+                                  fontWeight: FontWeight.normal,
                                   fontSize: 14.sp),
-                              DateFormat('dd.MM.yyyy\nHH:mm').format(
+                              DateFormat('HH:mm').format(
                                 chat.last_msg_time!.toDate(),
                               ),
                             )
                           ],
                         ),
+                        
                       ),
-                      Text(
-                        chat.last_msg ?? "no last msg",
-                        style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16.sp),
-                      ),
+                      
                     ],
                   ),
                 ),

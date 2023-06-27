@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refreshPage() async {
-    _homeController.init(); // Перезагрузка страницы
+    _homeController.init(); 
   }
 
   @override
@@ -52,11 +52,10 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1, // Задаем количество столбцов
+                  crossAxisCount: 1, 
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  childAspectRatio:
-                      1.1.h, // Отношение ширины к высоте каждого элемента
+                  childAspectRatio: 1.1.h, 
                 ),
                 itemCount: state.posts!.length,
                 itemBuilder: (context, index) {
