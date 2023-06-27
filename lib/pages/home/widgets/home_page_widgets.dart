@@ -16,7 +16,7 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
         color: Theme.of(context).colorScheme.secondaryContainer,
       ),
       padding: EdgeInsets.fromLTRB(
-          10.w, 10.h, 10.w, 0.h), // Добавление отступа 20px снизу
+          10.w, 10.h, 10.w, 0.h), 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
