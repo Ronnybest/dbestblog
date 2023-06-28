@@ -157,22 +157,21 @@ class _ChattingPageState extends State<ChattingPage>
     );
   }
 
-  Widget buildMessage(MessageObj msg) {
-    final bool isLeftAligned = myProfile.id != msg.message_from_id;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Align(
-        alignment: isLeftAligned ? Alignment.centerLeft : Alignment.centerRight,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width / 2 - 30.w,
-          child: Card(
+Widget buildMessage(MessageObj msg) {
+  final bool isLeftAligned = myProfile.id != msg.message_from_id;
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Align(
+      alignment: isLeftAligned ? Alignment.centerLeft : Alignment.centerRight,
+        //width: MediaQuery.of(context).size.width / 1.4 - 50.w,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //Text('MSG from ${msg.message_from_id}'),
-                SizedBox(
-                  // width: 100.w,
-                  // height: 100.h,
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 300.0, minWidth: 50), // Установите максимальную ширину в 100.0 пикселей
                   child: Text(
                     msg.message!,
                     overflow: TextOverflow.fade,
@@ -183,9 +182,11 @@ class _ChattingPageState extends State<ChattingPage>
             ),
           ),
         ),
-      ),
-    );
-  }
+      
+    ),
+  );
+}
+
 
   Widget buildInputText() {
     return Row(children: [
@@ -196,16 +197,19 @@ class _ChattingPageState extends State<ChattingPage>
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: _textEditingController,
-                  keyboardType: TextInputType.multiline,
-                  onChanged: (value) =>
-                      context.read<CurrentChatBloc>().add(WriteMessage(value)),
-                  maxLines: 3,
-                  minLines: 1,
-                  decoration: const InputDecoration(
-                    hintText: 'Type message...',
-                    border: InputBorder.none,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: TextField(
+                    controller: _textEditingController,
+                    keyboardType: TextInputType.multiline,
+                    onChanged: (value) =>
+                        context.read<CurrentChatBloc>().add(WriteMessage(value)),
+                    maxLines: 3,
+                    minLines: 1,
+                    decoration: const InputDecoration(
+                      hintText: 'Type message...',
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ),
