@@ -6,12 +6,12 @@ import 'package:dbestblog/common/models/chats.dart';
 import 'package:dbestblog/pages/chat/bloc/chats_bloc.dart';
 import 'package:dbestblog/pages/chat/bloc/chats_event.dart';
 import 'package:dbestblog/pages/chat/bloc/chats_state.dart';
+import 'package:dbestblog/pages/chat/current_chat/bloc/current_chat_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:dbestblog/pages/registration/widgets/registration_widgets.dart';
-
 
 import '../../common/models/user.dart';
 import '../../global.dart';
@@ -68,6 +68,8 @@ class _AllChatsPageState extends State<AllChatsPage> {
           ChatsObj chatsObj = ChatsObj.fromMap(chat);
           allChats.add(chatsObj);
         }
+        allChats.sort((a, b) => b.last_msg_time!.compareTo(a.last_msg_time!));
+
         _chatsController.sink.add(allChats);
         List<UserObj> allChatUsers = [];
         for (final chat in allChats) {
@@ -110,7 +112,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
             List<ChatsObj> chats = snapshot.data!;
             return BlocBuilder<ChatsBloc, ChatsState>(
               builder: (context, state) {
-              return Scaffold(
+                return Scaffold(
                   appBar: _widgets.buildAppBar(titleText: 'Chats'),
                   body: SafeArea(
                     child: CustomScrollView(
@@ -121,7 +123,14 @@ class _AllChatsPageState extends State<AllChatsPage> {
                             if (state.chatUsers != null &&
                                 index < state.chatUsers!.length) {
                               return GestureDetector(
-                                onTap: () => print(chats.length),
+                                onTap: () {
+                                  context
+                                      .read<ChatsBloc>()
+                                      .add(GetChatObjFromServer(chats[index]));
+                                  context.read<CurrentChatBloc>().add(
+                                      LoadAnotherUser(state.chatUsers![index]));
+                                  Navigator.pushNamed(context, '/current_chat');
+                                },
                                 child: Container(
                                   child: buildChatItem(
                                     chats[index],
@@ -149,80 +158,85 @@ class _AllChatsPageState extends State<AllChatsPage> {
   }
 
   Widget buildChatItem(ChatsObj? chat, UserObj? user) {
-    return chat != null && user != null
-        ? Container(
-          decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.w),
-        color: Theme.of(context).colorScheme.secondaryContainer,
-      ),
-            margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    radius: 30.r,
-                    foregroundImage: CachedNetworkImageProvider(user.avatarLink!),                
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(9.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 260.w,
-                        height: 40.h,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            
-                            Text(
-                              user.name ?? 'no name',
-                              style: TextStyle(
-                                  fontFamily: 'Nunito',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17.sp),
-                            ),                       
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 260.w,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              chat.last_msg ?? "no last msg",
-                              style: TextStyle(
-                                  fontFamily: 'Nunito',
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.sp),
-                            ),
-                            Text(
-                              style: TextStyle(
-                                  fontFamily: 'Nunito',
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14.sp),
-                              DateFormat('HH:mm').format(
-                                chat.last_msg_time!.toDate(),
-                              ),
-                            )
-                          ],
-                        ),
-                        
-                      ),
-                      
-                    ],
-                  ),
-                ),
-              ],
+    if (chat != null && user != null) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.w),
+          color: Theme.of(context).colorScheme.secondaryContainer,
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 30.r,
+                foregroundImage: CachedNetworkImageProvider(user.avatarLink!),
+              ),
             ),
-          )
-        : LinearProgressIndicator();
+            Padding(
+              padding: EdgeInsets.all(9.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 260.w,
+                    height: 40.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          user.name ?? 'no name',
+                          style: TextStyle(
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.sp),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 260.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 200.w,
+                          //height: 100,
+                          child: Text(
+                            chat.last_msg ?? "no last msg",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16.sp),
+                          ),
+                        ),
+                        Text(
+                          style: TextStyle(
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14.sp),
+                          DateFormat('HH:mm').format(
+                            chat.last_msg_time!.toDate(),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return LinearProgressIndicator();
+    }
   }
 }

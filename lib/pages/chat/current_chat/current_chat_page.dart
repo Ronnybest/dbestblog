@@ -1,15 +1,181 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class ChattingPage extends StatefulWidget {
+import 'package:dbestblog/common/models/message.dart';
+import 'package:dbestblog/common/models/user.dart';
+import 'package:dbestblog/global.dart';
+import 'package:dbestblog/pages/chat/current_chat/bloc/current_chat_bloc.dart';
+import 'package:dbestblog/pages/chat/current_chat/current_chat_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../registration/widgets/registration_widgets.dart';
+
+class ChattingPage extends StatefulWidget with WidgetsBindingObserver {
   const ChattingPage({super.key});
 
   @override
   State<ChattingPage> createState() => _ChattingPageState();
 }
 
-class _ChattingPageState extends State<ChattingPage> {
+class _ChattingPageState extends State<ChattingPage>
+    with WidgetsBindingObserver {
+  TextEditingController _textEditingController = TextEditingController();
+  ScrollController scrollController = ScrollController();
+  StreamController<List<MessageObj>> _messagesController =
+      StreamController<List<MessageObj>>.broadcast();
+
+  Stream<List<MessageObj>> get chatsStream => _messagesController.stream;
+  late CurrentChatController _chatController;
+
+  UserObj myProfile = Global.storageServices.getUserProfile()!;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (MediaQuery.of(context).viewInsets.bottom == 0) {
+        // Клавиатура закрыта
+      } else {
+        // Клавиатура открыта
+        Timer(Duration(milliseconds: 100), () {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _chatController = CurrentChatController(context: context);
+    _chatController.fetchChats(_messagesController, scrollController);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final _widgets = RegistrationWidgets(context: context);
+    return BlocBuilder<CurrentChatBloc, CurrentChatState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: _widgets.buildAppBar(
+              titleText: state.another_user?.name ?? "error"),
+          body: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder<List<MessageObj>>(
+                  stream: chatsStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<MessageObj> messages = snapshot.requireData;
+                      return ListView(controller: scrollController, children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: messages.length,
+                          itemBuilder: (context, index) =>
+                              buildMessage(messages[index]),
+                        ),
+                      ]);
+                    } else {
+                      return const Text('error');
+                    }
+                  },
+                ),
+              ),
+              buildInputText(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildMessage(MessageObj msg) {
+    final bool isLeftAligned = myProfile.id != msg.message_from_id;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+        alignment: isLeftAligned ? Alignment.centerLeft : Alignment.centerRight,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width / 2 - 30.w,
+          child: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Text('MSG from ${msg.message_from_id}'),
+                SizedBox(
+                  // width: 100.w,
+                  // height: 100.h,
+                  child: Text(
+                    msg.message!,
+                    overflow: TextOverflow.fade,
+                    maxLines: null,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildInputText() {
+    return Row(children: [
+      Expanded(
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.w)),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _textEditingController,
+                  keyboardType: TextInputType.multiline,
+                  onChanged: (value) =>
+                      context.read<CurrentChatBloc>().add(WriteMessage(value)),
+                  maxLines: 3,
+                  minLines: 1,
+                  decoration: const InputDecoration(
+                    hintText: 'Type message...',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      MaterialButton(
+        minWidth: 0,
+        padding: EdgeInsets.all(10.w),
+        shape: const CircleBorder(),
+        onPressed: context.read<CurrentChatBloc>().state.message != null &&
+                context.read<CurrentChatBloc>().state.message != ''
+            ? () {
+                _chatController.sendMsg();
+                _textEditingController.clear();
+                //context.read<CurrentChatBloc>().add(const WriteMessage(null));
+              }
+            : null,
+        color: Theme.of(context).colorScheme.onSecondary,
+        child: Icon(
+          Icons.send,
+          size: 20.w,
+        ),
+      )
+    ]);
   }
 }

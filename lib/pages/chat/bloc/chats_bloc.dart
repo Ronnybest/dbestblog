@@ -7,5 +7,7 @@ class ChatsBloc extends Bloc<ChatsEvent, ChatsState> {
   ChatsBloc() : super(ChatsState()) {
     on<LoadUsersInChats>(
         (event, emit) => emit(state.copyWith(chatUsers: event.users)));
+    on<GetChatObjFromServer>(
+        (event, emit) => emit(state.copyWith(currentChat: event.currentChat)));
   }
 }

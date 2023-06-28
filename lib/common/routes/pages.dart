@@ -7,6 +7,7 @@ import 'package:dbestblog/pages/authorization/authorization_page.dart';
 import 'package:dbestblog/pages/authorization/bloc/authorization_bloc.dart';
 import 'package:dbestblog/pages/chat/bloc/chats_bloc.dart';
 import 'package:dbestblog/pages/chat/chats_page.dart';
+import 'package:dbestblog/pages/chat/current_chat/bloc/current_chat_bloc.dart';
 import 'package:dbestblog/pages/home/bloc/home_bloc.dart';
 import 'package:dbestblog/pages/home/home_page.dart';
 import 'package:dbestblog/pages/home/view_post/bloc/view_post_bloc.dart';
@@ -24,6 +25,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../pages/another_user_profile/another_user_profile.dart';
 import '../../pages/another_user_profile/bloc/another_user_profile_bloc.dart';
+import '../../pages/chat/current_chat/current_chat_page.dart';
 
 class AppPagesComplect {
   static List<PageEntity> routes() {
@@ -77,6 +79,11 @@ class AppPagesComplect {
         route: AppPageNames.ALL_CHATS,
         page: const AllChatsPage(),
         bloc: BlocProvider(create: (_) => ChatsBloc()),
+      ),
+      PageEntity(
+        route: AppPageNames.CURRENT_CHAT,
+        page: const ChattingPage(),
+        bloc: BlocProvider(create: (_) => CurrentChatBloc()),
       ),
     ];
   }

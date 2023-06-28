@@ -19,4 +19,6 @@ class AppPageNames {
   static const String ANOTHER_USER_PROFILE = '/another_user_profile';
 
   static const String ALL_CHATS = '/all_chats';
+
+  static const String CURRENT_CHAT = '/current_chat';
 }

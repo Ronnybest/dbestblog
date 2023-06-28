@@ -5,6 +5,9 @@ import 'package:dbestblog/common/models/user.dart';
 import 'package:dbestblog/global.dart';
 import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_bloc.dart';
 import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_events.dart';
+import 'package:dbestblog/pages/chat/bloc/chats_bloc.dart';
+import 'package:dbestblog/pages/chat/bloc/chats_event.dart';
+import 'package:dbestblog/pages/chat/current_chat/bloc/current_chat_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -61,6 +64,7 @@ class AnotherUserProfileController {
   Future<void> createNewChat() async {
     UserObj toUser = context.read<AnotherUserProfileBloc>().state.userObj!;
     UserObj fromUser = Global.storageServices.getUserProfile()!;
+    context.read<CurrentChatBloc>().add(LoadAnotherUser(toUser));
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('Chats')
         .where('from_user_id', isEqualTo: fromUser.id)
@@ -69,7 +73,15 @@ class AnotherUserProfileController {
         .get();
     if (snapshot.docs.isNotEmpty) {
       print('chat exists');
-      return;
+      if (context.mounted) {
+        context.read<ChatsBloc>().add(GetChatObjFromServer(ChatsObj.fromMap(
+            snapshot.docs.first.data() as Map<String, dynamic>)));
+        //print(context.read<ChatsBloc>().state.currentChat?.last_msg ?? 'error');
+        Navigator.pushNamed(
+          context,
+          '/current_chat',
+        );
+      }
     } else {
       ChatsObj chatsObj = ChatsObj(
         from_user_id: fromUser.id,
@@ -84,6 +96,14 @@ class AnotherUserProfileController {
           await _db.collection('Chats').add(chatsObj.toMap());
       chatsObj.chat_id = dr.id;
       await _db.collection('Chats').doc(dr.id).update({'chat_id': dr.id});
+
+      if (context.mounted) {
+        context.read<ChatsBloc>().add(GetChatObjFromServer(chatsObj));
+        Navigator.pushNamed(
+          context,
+          '/current_chat',
+        );
+      }
     }
   }
 }
