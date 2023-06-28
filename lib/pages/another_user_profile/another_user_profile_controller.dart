@@ -65,17 +65,39 @@ class AnotherUserProfileController {
     UserObj toUser = context.read<AnotherUserProfileBloc>().state.userObj!;
     UserObj fromUser = Global.storageServices.getUserProfile()!;
     context.read<CurrentChatBloc>().add(LoadAnotherUser(toUser));
-    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+
+    final String fromUserId = fromUser.id!;
+    final String toUserId = toUser.id!;
+
+    // Проверяем наличие чата, где from_user_id = fromUserId и to_user_id = toUserId
+    final QuerySnapshot snapshot1 = await FirebaseFirestore.instance
         .collection('Chats')
-        .where('from_user_id', isEqualTo: fromUser.id)
-        .where('to_user_id', isEqualTo: toUser.id)
+        .where('from_user_id', isEqualTo: fromUserId)
+        .where('to_user_id', isEqualTo: toUserId)
         .limit(1)
         .get();
-    if (snapshot.docs.isNotEmpty) {
+
+    // Проверяем наличие чата, где from_user_id = toUserId и to_user_id = fromUserId
+    final QuerySnapshot snapshot2 = await FirebaseFirestore.instance
+        .collection('Chats')
+        .where('from_user_id', isEqualTo: toUserId)
+        .where('to_user_id', isEqualTo: fromUserId)
+        .limit(1)
+        .get();
+
+    final List<QueryDocumentSnapshot> documents1 = snapshot1.docs;
+    final List<QueryDocumentSnapshot> documents2 = snapshot2.docs;
+
+    final List<QueryDocumentSnapshot> allDocuments = [
+      ...documents1,
+      ...documents2
+    ];
+
+    if (allDocuments.isNotEmpty) {
       print('chat exists');
       if (context.mounted) {
         context.read<ChatsBloc>().add(GetChatObjFromServer(ChatsObj.fromMap(
-            snapshot.docs.first.data() as Map<String, dynamic>)));
+            allDocuments.first.data() as Map<String, dynamic>)));
         //print(context.read<ChatsBloc>().state.currentChat?.last_msg ?? 'error');
         Navigator.pushNamed(
           context,

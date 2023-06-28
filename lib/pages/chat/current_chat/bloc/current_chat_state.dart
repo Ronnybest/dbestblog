@@ -11,4 +11,11 @@ class CurrentChatState {
       message: message ?? this.message,
     );
   }
+
+  CurrentChatState clearMsg() {
+    return CurrentChatState(
+      another_user: another_user,
+      message: null,
+    );
+  }
 }

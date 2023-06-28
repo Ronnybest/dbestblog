@@ -13,3 +13,7 @@ class LoadAnotherUser extends CurrentChatEvent {
   const LoadAnotherUser(this.another_user);
   final UserObj another_user;
 }
+
+class ClearMsg extends CurrentChatEvent {
+  const ClearMsg();
+}

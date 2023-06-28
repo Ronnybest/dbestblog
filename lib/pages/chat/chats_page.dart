@@ -26,7 +26,7 @@ class AllChatsPage extends StatefulWidget {
 class _AllChatsPageState extends State<AllChatsPage> {
   StreamController<List<ChatsObj>> _chatsController =
       StreamController<List<ChatsObj>>.broadcast();
-
+  final UserObj myProfile = Global.storageServices.getUserProfile()!;
   Stream<List<ChatsObj>> get chatsStream => _chatsController.stream;
 
   @override
@@ -43,15 +43,15 @@ class _AllChatsPageState extends State<AllChatsPage> {
   }
 
   Future<void> fetchChats() async {
-    UserObj currentUser = Global.storageServices.getUserProfile()!;
+    //UserObj myProfile = Global.storageServices.getUserProfile()!;
     FirebaseFirestore.instance
         .collection('Chats')
-        .where('to_user_id', isEqualTo: currentUser.id)
+        .where('to_user_id', isEqualTo: myProfile.id)
         .snapshots()
         .listen((snapshot1) async {
       FirebaseFirestore.instance
           .collection('Chats')
-          .where('from_user_id', isEqualTo: currentUser.id)
+          .where('from_user_id', isEqualTo: myProfile.id)
           .snapshots()
           .listen((snapshot2) async {
         List<QueryDocumentSnapshot<Object?>> documents1 = snapshot1.docs;
@@ -74,11 +74,11 @@ class _AllChatsPageState extends State<AllChatsPage> {
         List<UserObj> allChatUsers = [];
         for (final chat in allChats) {
           UserObj _userObj;
-          if (chat.from_user_id != currentUser.id) {
+          if (chat.from_user_id != myProfile.id) {
             _userObj = UserObj.fromMap(await getUserData(chat.from_user_id)!);
             allChatUsers.add(_userObj);
           }
-          if (chat.to_user_id != currentUser.id) {
+          if (chat.to_user_id != myProfile.id) {
             _userObj = UserObj.fromMap(await getUserData(chat.to_user_id)!);
             allChatUsers.add(_userObj);
           }
@@ -208,7 +208,9 @@ class _AllChatsPageState extends State<AllChatsPage> {
                           width: 200.w,
                           //height: 100,
                           child: Text(
-                            chat.last_msg ?? "no last msg",
+                            chat.last_msg_user_id == myProfile.id
+                                ? 'You: ${chat.last_msg}'
+                                : chat.last_msg ?? "no last msg",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: TextStyle(

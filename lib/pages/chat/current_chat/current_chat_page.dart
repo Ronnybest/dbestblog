@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../registration/widgets/registration_widgets.dart';
+import '../../another_user_profile/bloc/another_user_profile_bloc.dart';
+import '../../another_user_profile/bloc/another_user_profile_events.dart';
 
 class ChattingPage extends StatefulWidget with WidgetsBindingObserver {
   const ChattingPage({super.key});
@@ -65,40 +66,94 @@ class _ChattingPageState extends State<ChattingPage>
 
   @override
   Widget build(BuildContext context) {
-    final _widgets = RegistrationWidgets(context: context);
-    return BlocBuilder<CurrentChatBloc, CurrentChatState>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: _widgets.buildAppBar(
-              titleText: state.another_user?.name ?? "error"),
-          body: Column(
-            children: [
-              Expanded(
-                child: StreamBuilder<List<MessageObj>>(
-                  stream: chatsStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<MessageObj> messages = snapshot.requireData;
-                      return ListView(controller: scrollController, children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: messages.length,
-                          itemBuilder: (context, index) =>
-                              buildMessage(messages[index]),
-                        ),
-                      ]);
-                    } else {
-                      return const Text('error');
-                    }
-                  },
+    return WillPopScope(
+      onWillPop: () async {
+        context.read<CurrentChatBloc>().add(const ClearMsg());
+        return true;
+      },
+      child: BlocBuilder<CurrentChatBloc, CurrentChatState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              // systemOverlayStyle: SystemUiOverlayStyle.light,
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(1),
+                child: Container(
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+                  //* height defines the thickness of the line
+                  height: .3,
                 ),
               ),
-              buildInputText(),
-            ],
-          ),
-        );
-      },
+              centerTitle: true,
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    context.read<AnotherUserProfileBloc>().add(
+                        LoadProfileAndPosts(
+                            null, null, state.another_user!.id!));
+                    Navigator.of(context).pushNamed('/another_user_profile');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10.w),
+                    child: CircleAvatar(
+                      radius: 18.r,
+                      foregroundColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
+                      foregroundImage: NetworkImage(
+                          state.another_user!.avatarLink!,
+                          scale: 0.5),
+                    ),
+                  ),
+                ),
+              ],
+              title: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.another_user!.name!,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontFamily: 'Nunito',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: StreamBuilder<List<MessageObj>>(
+                    stream: chatsStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<MessageObj> messages = snapshot.requireData;
+                        return ListView(
+                            controller: scrollController,
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: messages.length,
+                                itemBuilder: (context, index) =>
+                                    buildMessage(messages[index]),
+                              ),
+                            ]);
+                      } else {
+                        return const Text('error');
+                      }
+                    },
+                  ),
+                ),
+                buildInputText(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -167,7 +222,7 @@ class _ChattingPageState extends State<ChattingPage>
             ? () {
                 _chatController.sendMsg();
                 _textEditingController.clear();
-                //context.read<CurrentChatBloc>().add(const WriteMessage(null));
+                context.read<CurrentChatBloc>().add(const ClearMsg());
               }
             : null,
         color: Theme.of(context).colorScheme.onSecondary,

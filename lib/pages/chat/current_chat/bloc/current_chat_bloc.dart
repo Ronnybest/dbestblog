@@ -11,5 +11,6 @@ class CurrentChatBloc extends Bloc<CurrentChatEvent, CurrentChatState> {
         (event, emit) => emit(state.copyWith(message: event.message)));
     on<LoadAnotherUser>((event, emit) =>
         emit(state.copyWith(another_user: event.another_user)));
+    on<ClearMsg>((event, emit) => emit(state.clearMsg()));
   }
 }

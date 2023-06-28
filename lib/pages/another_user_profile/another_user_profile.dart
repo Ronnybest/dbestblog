@@ -1,3 +1,4 @@
+import 'package:dbestblog/global.dart';
 import 'package:dbestblog/pages/another_user_profile/another_user_profile_controller.dart';
 import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_bloc.dart';
 import 'package:dbestblog/pages/another_user_profile/bloc/another_user_profile_events.dart';
@@ -20,7 +21,7 @@ class AnotherUserProfilePage extends StatefulWidget {
 
 class _AnotherUserProfilePageState extends State<AnotherUserProfilePage> {
   late final AnotherUserProfileController _controller;
-
+  final myProfile = Global.storageServices.getUserProfile()!;
   @override
   void initState() {
     super.initState();
@@ -93,18 +94,19 @@ class _AnotherUserProfilePageState extends State<AnotherUserProfilePage> {
                               ),
                             ),
                           ),
-                          SliverToBoxAdapter(
-                            child: Center(
-                                child: Container(
-                              child: IconButton(
-                                icon: Icon(Icons.mail),
-                                onPressed: () async {
-                                  await _controller.createNewChat();
-                                  print('new chat has been created');
-                                },
-                              ),
-                            )),
-                          ),
+                          if (state.userObj!.id != myProfile.id)
+                            SliverToBoxAdapter(
+                              child: Center(
+                                  child: Container(
+                                child: IconButton(
+                                  icon: Icon(Icons.mail),
+                                  onPressed: () async {
+                                    await _controller.createNewChat();
+                                    //print('new chat has been created');
+                                  },
+                                ),
+                              )),
+                            ),
                           SliverToBoxAdapter(
                             child: Center(
                               child: buildText(

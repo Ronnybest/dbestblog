@@ -56,5 +56,8 @@ class CurrentChatController {
       'last_msg_time': Timestamp.now(),
       'last_msg_user_id': msg.message_from_id
     });
+    if (context.mounted) {
+      context.read<CurrentChatBloc>().add(const WriteMessage(null));
+    }
   }
 }
