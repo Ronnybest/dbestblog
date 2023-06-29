@@ -108,7 +108,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
         stream: chatsStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print('snapshot has data');
+            //print('snapshot has data');
             List<ChatsObj> chats = snapshot.data!;
             return BlocBuilder<ChatsBloc, ChatsState>(
               builder: (context, state) {

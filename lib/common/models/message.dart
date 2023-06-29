@@ -6,6 +6,7 @@ class MessageObj {
   late String? message_from_id;
   late String? chat_id;
   late Timestamp? upload_time;
+  late bool? is_read;
 
   MessageObj({
     this.message_id,
@@ -13,6 +14,7 @@ class MessageObj {
     this.message_from_id,
     this.chat_id,
     this.upload_time,
+    this.is_read,
   });
 
   MessageObj.fromMap(Map<String, dynamic> map) {
@@ -21,6 +23,7 @@ class MessageObj {
     message_from_id = map['message_from_id'];
     chat_id = map['chat_id'];
     upload_time = map['upload_time'] as Timestamp?;
+    is_read = map['is_read'] as bool?;
   }
 
   Map<String, dynamic> toMap() {
@@ -30,6 +33,7 @@ class MessageObj {
       'message_from_id': message_from_id,
       'chat_id': chat_id,
       'upload_time': upload_time,
+      'is_read': is_read,
     };
   }
 }

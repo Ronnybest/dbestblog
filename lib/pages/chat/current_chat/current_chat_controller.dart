@@ -15,27 +15,52 @@ class CurrentChatController {
   const CurrentChatController({required this.context});
   Future<void> fetchChats(StreamController<List<MessageObj>> _chatsController,
       ScrollController scrollController) async {
-    ChatsObj currentChat = context.read<ChatsBloc>().state.currentChat!;
-    print(currentChat.chat_id);
-    FirebaseFirestore.instance
-        .collection('Messages')
-        .where('chat_id', isEqualTo: currentChat.chat_id)
-        .orderBy('upload_time', descending: false)
-        .snapshots()
-        .listen((snapshot1) async {
-      List<QueryDocumentSnapshot<Object?>> documents = snapshot1.docs;
+    if (!_chatsController.isClosed) {
+      //print('stream dont close 1');
+      UserObj myProfile = Global.storageServices.getUserProfile()!;
+      ChatsObj currentChat = context.read<ChatsBloc>().state.currentChat!;
+      //print(currentChat.chat_id);
+      FirebaseFirestore.instance
+          .collection('Messages')
+          .where('chat_id', isEqualTo: currentChat.chat_id)
+          .orderBy('upload_time', descending: false)
+          .snapshots()
+          .listen((snapshot1) async {
+        List<QueryDocumentSnapshot<Object?>> documents = snapshot1.docs;
 
-      List<MessageObj> allMessages = [];
-      for (final msgDoc in documents) {
-        final msg = msgDoc.data() as Map<String, dynamic>;
-        MessageObj msgObj = MessageObj.fromMap(msg);
-        allMessages.add(msgObj);
-      }
-      _chatsController.sink.add(allMessages);
-      await Future.delayed(Duration(milliseconds: 100));
-      scrollController.jumpTo(scrollController.position.maxScrollExtent);
-      //print('stream load successfully');
-    });
+        List<MessageObj> allMessages = [];
+        for (final msgDoc in documents) {
+          final msg = msgDoc.data() as Map<String, dynamic>;
+          MessageObj msgObj = MessageObj.fromMap(msg);
+          allMessages.add(msgObj);
+        }
+        if (!_chatsController.isClosed) {
+          //print('stream dont close 2');
+          _chatsController.sink.add(allMessages);
+          //await Future.delayed(const Duration(milliseconds: 200));
+          Timer(const Duration(milliseconds: 200), () {
+            scrollController.animateTo(
+              scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          });
+          FirebaseFirestore.instance
+              .collection('Messages')
+              .where('chat_id', isEqualTo: currentChat.chat_id)
+              .where('message_from_id', isNotEqualTo: myProfile.id)
+              .get()
+              .then((snapshot) async {
+            for (var doc in snapshot.docs) {
+              doc.reference.update({'is_read': true});
+            }
+          });
+        }
+        //if (_chatsController.isClosed == true) print('stream close 2');
+        //print('stream load successfully');
+      });
+    }
+    //if (_chatsController.isClosed == true) print('stream close 1');
   }
 
   Future<void> sendMsg() async {
@@ -47,6 +72,7 @@ class CurrentChatController {
       message: context.read<CurrentChatBloc>().state.message,
       message_from_id: currentUser.id,
       message_id: '',
+      is_read: false,
     );
     final _db = FirebaseFirestore.instance;
     DocumentReference _dr = await _db.collection('Messages').add(msg.toMap());

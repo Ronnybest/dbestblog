@@ -8,6 +8,7 @@ import 'package:dbestblog/pages/chat/current_chat/current_chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../another_user_profile/bloc/another_user_profile_bloc.dart';
 import '../../another_user_profile/bloc/another_user_profile_events.dart';
@@ -21,15 +22,16 @@ class ChattingPage extends StatefulWidget with WidgetsBindingObserver {
 
 class _ChattingPageState extends State<ChattingPage>
     with WidgetsBindingObserver {
-  TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
   ScrollController scrollController = ScrollController();
-  StreamController<List<MessageObj>> _messagesController =
+  final StreamController<List<MessageObj>> _messagesController =
       StreamController<List<MessageObj>>.broadcast();
 
   Stream<List<MessageObj>> get chatsStream => _messagesController.stream;
   late CurrentChatController _chatController;
-
+  //GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   UserObj myProfile = Global.storageServices.getUserProfile()!;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -38,13 +40,13 @@ class _ChattingPageState extends State<ChattingPage>
         // Клавиатура закрыта
       } else {
         // Клавиатура открыта
-        Timer(Duration(milliseconds: 100), () {
-          scrollController.animateTo(
-            scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        });
+        // Timer(Duration(milliseconds: 100), () {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+        );
+        //});
       }
     });
   }
@@ -52,7 +54,10 @@ class _ChattingPageState extends State<ChattingPage>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-
+    scrollController.dispose();
+    _textEditingController.dispose();
+    _messagesController.close();
+    print('msg controller has been disposed');
     super.dispose();
   }
 
@@ -62,6 +67,7 @@ class _ChattingPageState extends State<ChattingPage>
     WidgetsBinding.instance.addObserver(this);
     _chatController = CurrentChatController(context: context);
     _chatController.fetchChats(_messagesController, scrollController);
+    //scrollController.addListener(scrollListener);
   }
 
   @override
@@ -143,7 +149,9 @@ class _ChattingPageState extends State<ChattingPage>
                               ),
                             ]);
                       } else {
-                        return const Text('error');
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }
                     },
                   ),
@@ -157,36 +165,74 @@ class _ChattingPageState extends State<ChattingPage>
     );
   }
 
-Widget buildMessage(MessageObj msg) {
-  final bool isLeftAligned = myProfile.id != msg.message_from_id;
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Align(
-      alignment: isLeftAligned ? Alignment.centerLeft : Alignment.centerRight,
+  Widget buildMessage(MessageObj msg) {
+    final bool isLeftAligned = myProfile.id != msg.message_from_id;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+        alignment: isLeftAligned ? Alignment.centerLeft : Alignment.centerRight,
         //width: MediaQuery.of(context).size.width / 1.4 - 50.w,
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 300.0, minWidth: 50), // Установите максимальную ширину в 100.0 пикселей
-                  child: Text(
-                    msg.message!,
-                    overflow: TextOverflow.fade,
-                    maxLines: null,
-                  ),
+            child: IntrinsicWidth(
+              stepHeight: 10.h,
+              //stepWidth: 50.w,
+              //constraints: BoxConstraints(maxWidth: 130.0.w, minWidth: 20.w),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  //minHeight: 20.h,
+                  //minWidth: 70.w,
+                  maxWidth: 200.0.w, // Максимальная ширина карточки
                 ),
-              ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        msg.message!,
+                        overflow: TextOverflow.fade,
+                        maxLines: null,
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 10.w),
+                              child: Text(
+                                style: TextStyle(fontSize: 9.sp),
+                                DateFormat('HH:mm').format(
+                                  msg.upload_time!.toDate(),
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: !isLeftAligned,
+                              child: Icon(
+                                msg.is_read != true
+                                    ? Icons.done
+                                    : Icons.done_all,
+                                size: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
-      
-    ),
-  );
-}
-
+      ),
+    );
+  }
 
   Widget buildInputText() {
     return Row(children: [
@@ -202,8 +248,9 @@ Widget buildMessage(MessageObj msg) {
                   child: TextField(
                     controller: _textEditingController,
                     keyboardType: TextInputType.multiline,
-                    onChanged: (value) =>
-                        context.read<CurrentChatBloc>().add(WriteMessage(value)),
+                    onChanged: (value) => context
+                        .read<CurrentChatBloc>()
+                        .add(WriteMessage(value)),
                     maxLines: 3,
                     minLines: 1,
                     decoration: const InputDecoration(
@@ -227,6 +274,11 @@ Widget buildMessage(MessageObj msg) {
                 _chatController.sendMsg();
                 _textEditingController.clear();
                 context.read<CurrentChatBloc>().add(const ClearMsg());
+                scrollController.animateTo(
+                  scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                );
               }
             : null,
         color: Theme.of(context).colorScheme.onSecondary,
