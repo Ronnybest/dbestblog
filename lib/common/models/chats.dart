@@ -7,6 +7,8 @@ class ChatsObj {
   late Timestamp? last_msg_time;
   late String? last_msg_user_id;
   late String? to_user_id;
+  late String? last_msg_id;
+  late bool? chat_status;
 
   ChatsObj({
     this.chat_id,
@@ -15,6 +17,8 @@ class ChatsObj {
     this.last_msg_time,
     this.last_msg_user_id,
     this.to_user_id,
+    this.last_msg_id,
+    this.chat_status,
   });
 
   ChatsObj.fromMap(Map<String, dynamic> map) {
@@ -24,6 +28,8 @@ class ChatsObj {
     this.last_msg_time = map['last_msg_time'];
     this.last_msg_user_id = map['last_msg_user_id'];
     this.to_user_id = map['to_user_id'];
+    this.last_msg_id = map['last_msg_id'];
+    this.chat_status = map['chat_status'];
   }
 
   Map<String, dynamic> toMap() {
@@ -34,6 +40,8 @@ class ChatsObj {
       'last_msg_time': this.last_msg_time,
       'last_msg_user_id': this.last_msg_user_id,
       'to_user_id': this.to_user_id,
+      'last_msg_id': this.last_msg_id,
+      'chat_status': this.chat_status,
     };
   }
 }

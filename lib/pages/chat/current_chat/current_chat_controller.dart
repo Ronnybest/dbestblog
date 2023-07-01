@@ -59,7 +59,18 @@ class CurrentChatController {
         //if (_chatsController.isClosed == true) print('stream close 2');
         //print('stream load successfully');
       });
+      final _db = FirebaseFirestore.instance;
+      DocumentSnapshot chatSnapshot =
+          await _db.collection('Chats').doc(currentChat.chat_id).get();
+      String lastMsgId = chatSnapshot['last_msg_user_id'];
+      if (lastMsgId != myProfile.id) {
+        print('Я ЗАШЕЛ СЮДА Я ЕБАУНТЫЙ');
+        await _db.collection('Chats').doc(currentChat.chat_id).update({
+          'chat_status': true,
+        });
+      }
     }
+
     //if (_chatsController.isClosed == true) print('stream close 1');
   }
 
@@ -77,11 +88,15 @@ class CurrentChatController {
     final _db = FirebaseFirestore.instance;
     DocumentReference _dr = await _db.collection('Messages').add(msg.toMap());
     await _db.collection('Messages').doc(_dr.id).update({'message_id': _dr.id});
-    await _db.collection('Chats').doc(currentChat.chat_id).update({
-      'last_msg': msg.message,
-      'last_msg_time': Timestamp.now(),
-      'last_msg_user_id': msg.message_from_id
-    });
+    await _db.collection('Chats').doc(currentChat.chat_id).update(
+      {
+        'last_msg': msg.message,
+        'last_msg_time': Timestamp.now(),
+        'last_msg_user_id': msg.message_from_id,
+        'last_msg_id': _dr.id,
+        'chat_status': msg.is_read,
+      },
+    );
     if (context.mounted) {
       context.read<CurrentChatBloc>().add(const WriteMessage(null));
     }
