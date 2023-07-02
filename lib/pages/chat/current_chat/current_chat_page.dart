@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbestblog/common/models/message.dart';
 import 'package:dbestblog/common/models/user.dart';
 import 'package:dbestblog/global.dart';
@@ -165,71 +165,103 @@ class _ChattingPageState extends State<ChattingPage>
     );
   }
 
+  Timestamp? prevDate;
+  bool checkDateDifference(Timestamp currentDate) {
+    if (prevDate != null) {
+      DateTime dateTime1 = prevDate!.toDate();
+      DateTime dateTime2 = currentDate.toDate();
+
+      bool sameDay = dateTime1.year == dateTime2.year &&
+          dateTime1.month == dateTime2.month &&
+          dateTime1.day == dateTime2.day;
+
+      if (!sameDay) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Widget buildMessage(MessageObj msg) {
     final bool isLeftAligned = myProfile.id != msg.message_from_id;
+    bool differenceDate = checkDateDifference(msg.upload_time!);
+    prevDate = msg.upload_time!;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Align(
-        alignment: isLeftAligned ? Alignment.centerLeft : Alignment.centerRight,
-        //width: MediaQuery.of(context).size.width / 1.4 - 50.w,
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: IntrinsicWidth(
-              stepHeight: 10.h,
-              //stepWidth: 50.w,
-              //constraints: BoxConstraints(maxWidth: 130.0.w, minWidth: 20.w),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  //minHeight: 20.h,
-                  //minWidth: 70.w,
-                  maxWidth: 200.0.w, // Максимальная ширина карточки
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        msg.message!,
-                        overflow: TextOverflow.fade,
-                        maxLines: null,
-                      ),
+      child: Column(
+        children: [
+          Visibility(
+            visible: differenceDate,
+            child: Center(
+              child: Text(
+                DateFormat('EEE, d.M.y').format(msg.upload_time!.toDate()),
+              ),
+            ),
+          ),
+          Align(
+            alignment:
+                isLeftAligned ? Alignment.centerLeft : Alignment.centerRight,
+            //width: MediaQuery.of(context).size.width / 1.4 - 50.w,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: IntrinsicWidth(
+                  stepHeight: 10.h,
+                  //stepWidth: 50.w,
+                  //constraints: BoxConstraints(maxWidth: 130.0.w, minWidth: 20.w),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      //minHeight: 20.h,
+                      //minWidth: 70.w,
+                      maxWidth: 200.0.w, // Максимальная ширина карточки
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
+                        Flexible(
+                          child: Text(
+                            msg.message!,
+                            overflow: TextOverflow.fade,
+                            maxLines: null,
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 10.w),
-                              child: Text(
-                                style: TextStyle(fontSize: 9.sp),
-                                DateFormat('HH:mm').format(
-                                  msg.upload_time!.toDate(),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10.w),
+                                  child: Text(
+                                    style: TextStyle(fontSize: 9.sp),
+                                    DateFormat('HH:mm').format(
+                                      msg.upload_time!.toDate(),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Visibility(
-                              visible: !isLeftAligned,
-                              child: Icon(
-                                msg.is_read != true
-                                    ? Icons.done
-                                    : Icons.done_all,
-                                size: 14,
-                              ),
+                                Visibility(
+                                  visible: !isLeftAligned,
+                                  child: Icon(
+                                    msg.is_read != true
+                                        ? Icons.done
+                                        : Icons.done_all,
+                                    size: 14,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
