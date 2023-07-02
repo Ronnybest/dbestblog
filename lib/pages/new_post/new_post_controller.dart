@@ -31,7 +31,9 @@ class NewPostController {
     String downloadUrl = '';
     final state = context.read<NewPostBloc>().state;
     try {
-      if (state.image != null) {
+      if (state.image != null &&
+          state.description != null &&
+          state.description != '') {
         // Создание ссылки на Firebase Storage без использования папок
         Reference storageRef =
             FirebaseStorage.instance.ref('${DateTime.now()}.jpg');
@@ -42,7 +44,13 @@ class NewPostController {
 
         // Получение ссылки на загруженный файл
         downloadUrl = await storageSnapshot.ref.getDownloadURL();
-      } else {}
+      } else {
+        EasyLoading.dismiss();
+        buildSnackBar(
+            msg: "You have to select image and write post's text",
+            context: context);
+        return;
+      }
       postObj.image_link = downloadUrl;
       postObj.description = state.description;
       postObj.author_id = UserObj!.id;

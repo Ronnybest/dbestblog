@@ -229,12 +229,17 @@ class _AllChatsPageState extends State<AllChatsPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            user.name ?? 'no name',
-                            style: TextStyle(
-                                fontFamily: 'Nunito',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17.sp),
+                          SizedBox(
+                            width: 200.w,
+                            height: 20.h,
+                            child: Text(
+                              user.name ?? 'no name',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17.sp),
+                            ),
                           ),
                           Visibility(
                             visible: checkPipka(

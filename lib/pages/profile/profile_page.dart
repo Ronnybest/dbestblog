@@ -99,12 +99,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: EdgeInsets.only(top: 10.h),
                   ),
                   SliverToBoxAdapter(
-                    child: Center(
-                      child: buildText(
-                        userObj.name!,
-                        'Nunito',
-                        20.sp,
-                        FontWeight.bold,
+                    child: SizedBox(
+                      width: 250.w,
+                      height: 30.h,
+                      child: Center(
+                        child: buildText(
+                          userObj.name!,
+                          'Nunito',
+                          20.sp,
+                          FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),

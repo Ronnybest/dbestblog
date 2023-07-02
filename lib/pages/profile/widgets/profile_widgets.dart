@@ -28,6 +28,7 @@ Widget buildText(
     String text, String fontFamily, double fontSize, FontWeight fontWeight) {
   return Text(
     text,
+    overflow: TextOverflow.ellipsis,
     style: TextStyle(
       fontFamily: fontFamily,
       fontSize: fontSize,

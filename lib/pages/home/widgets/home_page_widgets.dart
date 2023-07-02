@@ -15,8 +15,7 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
         borderRadius: BorderRadius.circular(20.w),
         color: Theme.of(context).colorScheme.secondaryContainer,
       ),
-      padding: EdgeInsets.fromLTRB(
-          10.w, 10.h, 10.w, 0.h), 
+      padding: EdgeInsets.fromLTRB(10.w, 10.h, 10.w, 0.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,12 +34,16 @@ Widget postGrid({required PostObj item, required BuildContext context}) {
                   backgroundColor: Colors.transparent,
                 ),
                 SizedBox(width: 8.w),
-                Text(
-                  item.author_name!,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontFamily: 'Nunito',
-                    fontWeight: FontWeight.normal,
+                SizedBox(
+                  width: 290.w,
+                  child: Text(
+                    item.author_name!,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontFamily: 'Nunito',
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ),
               ],

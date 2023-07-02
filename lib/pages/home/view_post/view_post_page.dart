@@ -75,13 +75,17 @@ class _ViewPostPageState extends State<ViewPostPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                _postObj.author_name!,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontFamily: 'Nunito',
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
+              SizedBox(
+                width: 200.w,
+                child: Text(
+                  _postObj.author_name!,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontFamily: 'Nunito',
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
@@ -255,12 +259,16 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        user.name!,
-                        style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17.sp),
+                      SizedBox(
+                        width: 180.w,
+                        child: Text(
+                          user.name!,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.sp),
+                        ),
                       ),
                       SizedBox(
                         width: 10.w,
@@ -270,19 +278,24 @@ class _ViewPostPageState extends State<ViewPostPage> {
                             fontFamily: 'Nunito',
                             fontWeight: FontWeight.w300,
                             fontSize: 14.sp),
-                        DateFormat('HH:mm').format(
+                        DateFormat('dd.MM.yy | HH:mm').format(
                           comment.upload_time!.toDate(),
                         ),
                       )
                     ],
                   ),
                 ),
-                Text(
-                  comment.message!,
-                  style: TextStyle(
-                      fontFamily: 'Nunito',
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16.sp),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 75.w,
+                  child: Text(
+                    comment.message!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16.sp),
+                  ),
                 ),
               ],
             ),

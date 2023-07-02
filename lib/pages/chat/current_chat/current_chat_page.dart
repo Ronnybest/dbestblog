@@ -117,13 +117,17 @@ class _ChattingPageState extends State<ChattingPage>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    state.another_user!.name!,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontFamily: 'Nunito',
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
+                  SizedBox(
+                    width: 200.w,
+                    child: Text(
+                      state.another_user!.name!,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontFamily: 'Nunito',
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -185,13 +189,14 @@ class _ChattingPageState extends State<ChattingPage>
   Widget buildMessage(MessageObj msg) {
     final bool isLeftAligned = myProfile.id != msg.message_from_id;
     bool differenceDate = checkDateDifference(msg.upload_time!);
+    bool nullablePrevDate = prevDate == null;
     prevDate = msg.upload_time!;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           Visibility(
-            visible: differenceDate,
+            visible: differenceDate || nullablePrevDate,
             child: Center(
               child: Text(
                 DateFormat('EEE, d.M.y').format(msg.upload_time!.toDate()),
